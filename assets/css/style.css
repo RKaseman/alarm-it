@@ -1,0 +1,66 @@
+body{
+	background: url("../images/background.jpg");
+	background-size: 100%;
+    background-repeat: no-repeat;
+    color: black;
+    width: 100%;
+    background-attachment: fixed;
+}
+* {
+	box-sizing: border-box;
+}
+
+.card {
+    border-width: 2px;
+    border-color: black;
+    color: black;
+}
+h3 {
+	border-radius: 5px 5px 0px 0px;
+	padding-bottom: 5px;
+	text-align: center;
+}
+img { 
+    height: 150px;
+    width: 150px;
+}
+.btn {
+    /* adding spacing between each button*/
+    margin: 3px;
+    background-color: blue;
+    border-color: #fff;
+    border-radius: 5px;
+    color: #fff;
+    opacity: 0.8;
+}
+.card-title{
+    background: blue;
+}
+.gifDiv{
+    /* making the images go in one line rather than block & adding spacing between the images*/
+    float: left;
+    margin: 3px;
+}
+.container {
+	background-color: #fff;
+	opacity: 0.6;
+    padding: 20px;
+    width: 100% auto;
+}
+.jumbotron {
+    background-color: blue;
+}
+.jumbotron .h1, .jumbotron h1 {
+    text-align: center;
+}
+#copyright{
+	font-size: 14px;
+}
+div#footer {
+	clear: both;
+	margin-top: 40px;
+	position: center;
+	bottom: 0;
+	left: 0;
+	text-align: center;
+}
