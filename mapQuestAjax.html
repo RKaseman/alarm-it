@@ -15,6 +15,7 @@
 </head>
 
 <body>
+    <div id="test"></div>
 
 <script>
 
@@ -29,7 +30,8 @@ var to = "1901+East+Asbury+Avenue,Denver,CO";
 var altRoutes = "http://www.mapquestapi.com/directions/v2/alternateroutes?key=" + apiKey + "&from=" + from + "&to=" + to + "&maxRoutes=2&timeOverage=100";
 console.log("altRoutes : " + altRoutes);
 
-    // http://www.mapquestapi.com/directions/v2/optimizedroute?key=KEY&json={"locations":["Denver,CO","Westminster,CO","Boulder,CO"]}
+var optRoute = "http://www.mapquestapi.com/directions/v2/optimizedroute?key=" + apiKey + "&json={'locations':['Denver,CO','Westminster,CO','Boulder,CO']}";
+console.log("optRoute : " + optRoute);
 
 var geocode = "http://www.mapquestapi.com/geocoding/v1/address?key=" + apiKey + "&location=" + to + "&thumbMaps=false";
 console.log("geocode : " + geocode);
@@ -51,6 +53,16 @@ console.log("route : " + route);
         }); //end .then
 
     $.ajax({
+        url: optRoute,
+        method: "GET"
+    }) // end $.ajax
+        .then(function (responseOr) {
+            console.log(responseOr);
+            // var print = JSON.stringify(responseOr);
+            // document.getElementById("test").innerHTML = JSON.stringify(responseOr);
+        }); //end .then
+
+    $.ajax({
         url: geocode,
         method: "GET"
     }) // end $.ajax
@@ -67,6 +79,18 @@ console.log("route : " + route);
             console.log(response);
             // console.log(response.route);
         }); //end .then
+
+    $("#submit").on("click", function (event) {
+        event.preventDefault();
+        name = $("#name_input").val().trim();
+        home = $("#home_location_input").val().trim();
+        destination = $("#destination_input").val().trim();
+        arrival = $("#arrival_time").val().trim();
+        console.log("name : " + name);
+        console.log("home : " + home);
+        console.log("destination : " + destination);
+        console.log("arrival : " + arrival);
+    });
 
 // var hedonometer = "https://andyreagan-hedonometer-v1.p.mashape.com/timeseries/";
 
