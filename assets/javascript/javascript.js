@@ -4,6 +4,7 @@
 
 var apiKey = "FX1GGwHVna3hSW5VqqYNR8FOjqQhDdlM";
 
+// var from = "2105+Coronado+Pkwy+N,Denver,CO";
 var from = "2105+Coronado+Pkwy+N,Denver,CO";
 var to = "1901+East+Asbury+Avenue,Denver,CO";
 
@@ -22,6 +23,8 @@ console.log("route : " + route);
 // var trafficDelays = "http://www.mapquestapi.com/traffic/v2/incidents?key=" + apiKey + "&boundingBox=39.95,-105.25,39.52,-104.71&filters=construction,incidents";
 
 // console.log("optRoute : " + optRoute);
+
+var fromStr = topicArr[i].split("+").join(" ");
 
 $.ajax({
     url: altRoutes,
