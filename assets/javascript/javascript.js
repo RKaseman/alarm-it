@@ -24,7 +24,7 @@ console.log("route : " + route);
 
 // console.log("optRoute : " + optRoute);
 
-var fromStr = topicArr[i].split("+").join(" ");
+// var fromStr = topicArr[i].split("+").join(" ");
 
 $.ajax({
     url: altRoutes,
@@ -69,11 +69,17 @@ $("#add-information-btn").on("click", function (event) {
     name = $("#name_input").val().trim();
     home = $("#home_location_input").val().trim();
     destination = $("#destination_input").val().trim();
-    arrival = $("#arrival_time").val().trim();
+    destCity = $("#inputCity").val().trim();
+    destState = $("#inputState").val().trim();
+    destZip = $("#inputZip").val().trim();
+    // arrival = $("#arrival_time").val().trim();
     console.log("name : " + name);
     console.log("home : " + home);
     console.log("destination : " + destination);
-    console.log("arrival : " + arrival);
+    console.log("destCity : " + destCity);
+    console.log("destState : " + destState);
+    console.log("destZip : " + destZip);
+    // console.log("arrival : " + arrival);
 });
 
 $("form")[0].reset();
