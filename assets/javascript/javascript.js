@@ -36,7 +36,7 @@ var route = "https://www.mapquestapi.com/directions/v2/route?key=" + apiKey + "&
 
 
 getLocation();
-
+console.log(getlocation);
 
     function showPosition(position) {
         document.getElementById("home_location_input").innerHTML = "Latitude: " + position.coords.latitude +
