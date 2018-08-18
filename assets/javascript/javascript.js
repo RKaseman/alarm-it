@@ -1,11 +1,13 @@
 
+$(document).ready(function () {
+
 // accepted ajax GET address format:
 // 1555 Blake St, Denver, CO 80202
 
 var apiKey = "FX1GGwHVna3hSW5VqqYNR8FOjqQhDdlM";
 
-// var from = "2105+Coronado+Pkwy+N,Denver,CO";
 var from = "2105+Coronado+Pkwy+N,Denver,CO";
+var fromDeviceGL = "2105+Coronado+Pkwy+N,Denver,CO";
 var to = "1901+East+Asbury+Avenue,Denver,CO";
 
 var altRoutes = "http://www.mapquestapi.com/directions/v2/alternateroutes?key=" + apiKey + "&from=" + from + "&to=" + to + "&maxRoutes=2&timeOverage=100";
@@ -13,9 +15,6 @@ var altRoutes = "http://www.mapquestapi.com/directions/v2/alternateroutes?key=" 
 
 var optRoute = "http://www.mapquestapi.com/directions/v2/optimizedroute?key=" + apiKey + "&json={'locations':['Denver,CO','Westminster,CO','Boulder,CO']}";
 // console.log("optRoute : " + optRoute);
-
-var geocode = "http://www.mapquestapi.com/geocoding/v1/address?key=" + apiKey + "&location=" + from + "&thumbMaps=false";
-console.log("geocode : " + geocode);
 
 var route = "https://www.mapquestapi.com/directions/v2/route?key=" + apiKey + "&from=" + from + "&to=" + to + "&outFormat=json&ambiguities=ignore&routeType=fastest&doReverseGeocode=false&enhancedNarrative=false&avoidTimedConditions=false";
 // console.log("route : " + route);
@@ -25,6 +24,25 @@ var route = "https://www.mapquestapi.com/directions/v2/route?key=" + apiKey + "&
 // console.log("optRoute : " + optRoute);
 
 // var fromStr = topicArr[i].split("+").join(" ");
+
+// [ geolocation
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            document.getElementById("home_location_input").innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+
+getLocation();
+
+
+    function showPosition(position) {
+        document.getElementById("home_location_input").innerHTML = "Latitude: " + position.coords.latitude +
+            "<br>Longitude: " + position.coords.longitude;
+    }
+// ^ geolocation ]
 
 $.ajax({
     url: altRoutes,
@@ -43,15 +61,6 @@ $.ajax({
     .then(function (responseOr) {
         // console.log(responseOr);
         // console.log(responseOr);
-    }); //end .then
-
-$.ajax({
-    url: geocode,
-    method: "GET"
-}) // end $.ajax
-    .then(function (responseGc) {
-        console.log(responseGc);
-        console.log(responseGc.results[0].locations);
     }); //end .then
 
 $.ajax({
@@ -83,4 +92,18 @@ $("#add-information-btn").on("click", function (event) {
 });
 
     $("form")[0].reset();
+
+// var geocode = "http://www.mapquestapi.com/geocoding/v1/address?key=" + apiKey + "&location=" + from + "&thumbMaps=false";
+// console.log("geocode : " + geocode);
+
+// $.ajax({
+    // url: geocode,
+    // method: "GET"
+// }) // end $.ajax
+    // .then(function (responseGc) {
+        // console.log(responseGc);
+        // console.log(responseGc.results[0].locations);
+    // }); //end .then
+
+});
 
