@@ -6,42 +6,42 @@ $(document).ready(function () {
 
 var apiKey = "FX1GGwHVna3hSW5VqqYNR8FOjqQhDdlM";
 
+var deviceLatitude;
+var deviceLongitude;
 var from = "2105+Coronado+Pkwy+N,Denver,CO";
-var fromDeviceGL = "2105+Coronado+Pkwy+N,Denver,CO";
 var to = "1901+East+Asbury+Avenue,Denver,CO";
 
 var altRoutes = "http://www.mapquestapi.com/directions/v2/alternateroutes?key=" + apiKey + "&from=" + from + "&to=" + to + "&maxRoutes=2&timeOverage=100";
-// console.log("altRoutes : " + altRoutes);
+console.log("altRoutes : " + altRoutes);
 
 var optRoute = "http://www.mapquestapi.com/directions/v2/optimizedroute?key=" + apiKey + "&json={'locations':['Denver,CO','Westminster,CO','Boulder,CO']}";
-// console.log("optRoute : " + optRoute);
+console.log("optRoute : " + optRoute);
 
 var route = "https://www.mapquestapi.com/directions/v2/route?key=" + apiKey + "&from=" + from + "&to=" + to + "&outFormat=json&ambiguities=ignore&routeType=fastest&doReverseGeocode=false&enhancedNarrative=false&avoidTimedConditions=false";
-// console.log("route : " + route);
+console.log("route : " + route);
+
+var reverseGeocode = "http://www.mapquestapi.com/geocoding/v1/reverse?key=" + apiKey + "&location=30.333472,-81.470448&includeRoadMetadata=true&includeNearestIntersection=true";
+console.log("reverseGeocode : " + reverseGeocode);
 
 // var trafficDelays = "http://www.mapquestapi.com/traffic/v2/incidents?key=" + apiKey + "&boundingBox=39.95,-105.25,39.52,-104.71&filters=construction,incidents";
 
-// console.log("optRoute : " + optRoute);
-
 // var fromStr = topicArr[i].split("+").join(" ");
 
-// [ geolocation
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            document.getElementById("home_location_input").innerHTML = "Geolocation is not supported by this browser.";
-        }
+// if device geolocation exists populate current address
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+    // else manual entry
+    } else {
+        $("#home_location_input").attr("placeholder", "Geolocation is not available on this device. Enter current address.");
     }
 
-
-getLocation();
-
-
-    function showPosition(position) {
-        document.getElementById("home_location_input").innerHTML = "Latitude: " + position.coords.latitude +
-            "<br>Longitude: " + position.coords.longitude;
-    }
+function showPosition(position) {
+    $("#home_location_input").attr("placeholder", "Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude);
+    deviceLatitude = position.coords.latitude;
+    deviceLongitude = position.coords.longitude;
+    console.log(deviceLatitude);
+    console.log(deviceLongitude);
+}
 // ^ geolocation ]
 
 $.ajax({
@@ -49,7 +49,7 @@ $.ajax({
     method: "GET"
 }) // end $.ajax
     .then(function (responseAr) {
-        // console.log(responseAr);
+        console.log(responseAr);
         // console.log(responseAr.info);
         // console.log(responseAr.route);
     }); //end .then
