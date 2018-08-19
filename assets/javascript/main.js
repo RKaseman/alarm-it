@@ -44,7 +44,6 @@ var getInput;
 var timeToGoTest;
 var IntervalPeriod = (10 * 1000); //sets the time before checking status again 
 
-
 $(document).ready(function(){
    
 var alertIt = {
