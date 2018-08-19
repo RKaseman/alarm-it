@@ -12,41 +12,38 @@ var config = {
   firebase.initializeApp(config);
 
 
-  var database = firebase.database();
- 
-  var name = "empty";
-  var inTime = "empty";
-  var mode = "empty";
-  var frequency = "empty";
+    var database = firebase.database();
+    
+    var name = "empty";
+    var inTime = "empty";
+    var mode = "empty";
+    var frequency = "empty";
 
-  var startName = "empty";
-  var startAddress = "empty";
-  var startCity = "empty";
-  var startState = "empty";
-  var startZip = "empty";
+    var startName = "empty";
+    var startAddress = "empty";
+    var startCity = "empty";
+    var startState = "empty";
+    var startZip = "empty";
 
-  var endName = "empty";
-  var endAddress = "empty";
-  var endCity = "empty";
-  var endState = "empty";
-  var endZip = "empty";
+    var endName = "empty";
+    var endAddress = "empty";
+    var endCity = "empty";
+    var endState = "empty";
+    var endZip = "empty";
 
-
-
-
-var inTime; //the user input directly from the type="time" button on setup
-var farrTime; // a formatted version of arrTime that will work in the moment syntax
-var arrTime; //supplied by use in set up on.click
-var timeToGo; //this is the total time from start of app to the arrival time
-var timeOuttheDoor= 0;  // this is the timeToGo minus travel time
-var timeStarted; //the actual time user started the countdown
-var timeTravel = 0;  //this is the travel time received from the map api
-var timeSinceStart = 0;  //this is the time the app was started, used to time frequence of messages
-var IntervalID;
-var clockRunning = false;
-var lastText = 0;  //used in alertIt.count to make sure don't generate the message more than once
-var textToVoice = "I have nothing to say right now."
-var arrTextFill = [ 
+    var inTime; //the user input directly from the type="time" button on setup
+    var farrTime; // a formatted version of arrTime that will work in the moment syntax
+    var arrTime; //supplied by use in set up on.click
+    var timeToGo; //this is the total time from start of app to the arrival time
+    var timeOuttheDoor= 0;  // this is the timeToGo minus travel time
+    var timeStarted; //the actual time user started the countdown
+    var timeTravel = 0;  //this is the travel time received from the map api
+    var timeSinceStart = 0;  //this is the time the app was started, used to time frequence of messages
+    var IntervalID;
+    var clockRunning = false;
+    var lastText = 0;  //used in alertIt.count to make sure don't generate the message more than once
+    var textToVoice = "I have nothing to say right now."
+    var arrTextFill = [ 
                     {ontime: "Hey ",                 close:"Getting Close ",           late: "Oh no! "},
                     {ontime: "Well ",                close:"Don't dilly dally ",       late: "Uh oh! "},
                     {ontime: "Lookin good ",         close:"Time's getting close ",    late: "Too Late! "},
@@ -55,9 +52,9 @@ var arrTextFill = [
                     {ontime: "So ",                  close:"Not much time ",           late: "I hate to tell you this! "}
                 ];
 
-var getInput;
-var IntervalPeriod = (10 * 1000); //sets the time interval for checking status again 
-var setUpComplete = false;
+    var getInput;
+    var IntervalPeriod = (10 * 1000); //sets the time interval for checking status again 
+    var setUpComplete = false;
 
 $(document).ready(function(){
    
@@ -73,7 +70,6 @@ var alertIt = {
 
            getInput = {
 
-            // top row:  name  arrival time   mode   and  frequency
                 name: $("#name_input").val().trim(),
                 inTime: $("#arrive_time").val().trim(),
                 mode: $('input:radio[name="modeOption"]:checked').val(),
@@ -130,7 +126,6 @@ var alertIt = {
         arrTime = moment().hour(parseInt(getInput.inTime.charAt(0) + getInput.inTime.charAt(1))).minute(parseInt(getInput.inTime.charAt(3) + getInput.inTime.charAt(4)));
         farrTime = arrTime.format("HH:mm");
         timeToGo = arrTime.diff(moment(),"minutes");
-        //timeTravel = 60;  // map api gets this number
         timeTravel = alertIt.getTimeTravel();
         timeOuttheDoor = timeToGo - timeTravel;  //timeTravle not found yet  from map api
         timeSinceStart = moment().diff(timeStarted, "minutes");
@@ -141,10 +136,7 @@ var alertIt = {
         
         timeStarted = moment();
 
-        //alertIt.updateUI();
-    
-
-                        //start the countdown!
+    //start the countdown!
         if (!clockRunning) {
           intervalId = setInterval(alertIt.count, IntervalPeriod);  //this can be once every 30 or 60 seconds once it all works
           clockRunning = true;
@@ -154,7 +146,7 @@ var alertIt = {
     count: function() {
             alertIt.calcTimes();
 
-                        // Check to see if it is time to generate a reminder
+    // Check to see if it is time to generate a reminder
         if (timeSinceStart > 0 && timeSinceStart % getInput.frequency == 0 && timeSinceStart != lastText) {
             alertIt.generateMessage();
         } 
@@ -167,12 +159,10 @@ var alertIt = {
 
     updateUI: function(){
 
-        // $("#sincestartTime-display").text(timeSinceStart);
         $("#current_time_display").text("The current time is: " + moment().format("hh:mm A"));
         $("#arrival_time_display").text("Your planned arrival time at " + getInput.endName + " is: " + farrTime);
-        // $("#timeToGo-display").text(timeToGo); // till arrival at destination
         $("#travel_time_display").text("Travel time by " + getInput.mode + " today is " + timeTravel + " minutes.");
-        $("#leave_minutes_display").text("You need to leave in " + timeOuttheDoor + " minutes."); // time till you need to be out the door
+        $("#leave_minutes_display").text("You need to leave in " + timeOuttheDoor + " minutes."); 
        },
 
     generateMessage: function() {
