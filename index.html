@@ -14,176 +14,242 @@
 
     <!-- Moment.js Reference -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+
 </head>
 
 <body>
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <!-- Header  -->
+   
     <div class="container">
-        <!-- Jumbotron -->
-        <div class="card mb-12 p-12">
-            <h1 class="text-center">On Time</h1>
-        </div>
-        <!-- <div class="jumbotron" style="background-color: blue; color: whitesmoke">
-            <h1 class="text-center">On Time</h1>
-        </div> -->
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <!-- Current train time-->
-                <div class="card mb-4">
-                    <h3 class="card-title">Information</h3>
-                    <div class="card-body">
 
-                        <table class="table table-sm table-hover" id='information_table'>
-                            <thead>
-                                <tr>
-                                    <th scope="col">Your Name</th>
-                                    <th scope="col">Location</th>
-                                    <th scope="col">Destination</th>
-                                    <th scope="col">Arrival Time</th>
-                                    <th scope="col">Tranportation</th>
-                                    <th scope="col">Time Remind</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
+      s
+        <div class="jumbotron">
+            <h1 class="display-4">On-Time!</h1>
+            <p class="lead" id="alert_display">I'm here to help you get out the door on time!</p>
+            <hr class="my-4">
+        
+            <div class="row">
+                <div class="col-md-4">
+                    <a id="start-alert" class="btn btn-primary btn-lg big-btn" href="#" role="button">Start the Countdown!</a>
+                </div>
+                <div class="col-md-8">
+                    <p class="stats_display" id="current_time_display"></p>
+                    <p class="stats_display" id="arrival_time_display"></p>
+                    <p class="stats_display" id="travel_time_display"></p>
+                    <p  class="stats_display" id="leave_time_display"></p>
+                    <p  class="stats_display" id="leave_minutes_display"></p>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <!-- Add train -->
-                <div class="card mb-12 p-12">
-                    <h3 class="card-title">Your Information</h3>
-                    <div class="card-body">
-                        <!-- Entry Form -->
-                        <form>
-                            <div class="form-group row">
-                                <div class="col-sm-6">
-                                    <label for="firstname lastname" class="sr-only"></label>
-                                    <input id="name_input" class="form-control input-group-lg reg_name" type="text" name="firstname lastname" title="Enter first and last name"
-                                        placeholder="First name Last name">
-                                </div>
-                                <div class="col-sm-6">
-                                    <label for="current address" class="sr-only"></label>
-                                    <input id="home_location_input" class="form-control input-group-lg reg_name" type="text" name="adresss" title="Enter address" text=""
-                                        placeholder="Current Address">
-                                </div>
+
+
+            <form>
+
+    <!--   1st section: Row 1:  name  arrival time   mode   and  frequency -->
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <input type="text" class="form-control" id="name_input" placeholder="Name to use">
+                        </div>
+                    
+                        <label for="arrive_time" class="col-md-1 control-label">Arrive by:</label>
+                    
+                        <div class="form-group col-md-2 arr_time">
+                            <input type="time" class="form-control" id="arrive_time" placeholder="What time do you want to arrive?">
+                        </div>
+                        <div class="form-group col-md-3 radio-group">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="modeOption" id="inlineRadio1" value="drive">
+                                <label class="form-check-label" for="inlineRadio1">Drive</label>
                             </div>
-                            <!--/form-group-->
-                            <div class="form-group row">
-                                <label for="destination address" class="sr-only"></label>
-                                <input id="destination_input" class="form-control input-group-lg reg_name" type="text" name="Destination Address" title="Enter Destination address"
-                                    placeholder="Destination Address">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="modeOption" id="inlineRadio2" value="bus">
+                                <label class="form-check-label" for="inlineRadio2">Bus</label>
                             </div>
-                            <div class="form-group row">
-                                <div class="form-group col-md-5">
-                                    <label for="inputCity">City</label>
-                                    <input type="text" class="form-control" id="inputCity">
-                                </div>
-                                <div class="form-group col-md-5">
-                                    <label for="inputState">State</label>
-                                    <select id="inputState" class="form-control">
-                                        <option selected>Choose...</option>
-                                        <option value="AL">Alabama</option>
-                                        <option value="AK">Alaska</option>
-                                        <option value="AZ">Arizona</option>
-                                        <option value="AR">Arkansas</option>
-                                        <option value="CA">California</option>
-                                        <option value="CO">Colorado</option>
-                                        <option value="CT">Connecticut</option>
-                                        <option value="DE">Delaware</option>
-                                        <option value="DC">District Of Columbia</option>
-                                        <option value="FL">Florida</option>
-                                        <option value="GA">Georgia</option>
-                                        <option value="HI">Hawaii</option>
-                                        <option value="ID">Idaho</option>
-                                        <option value="IL">Illinois</option>
-                                        <option value="IN">Indiana</option>
-                                        <option value="IA">Iowa</option>
-                                        <option value="KS">Kansas</option>
-                                        <option value="KY">Kentucky</option>
-                                        <option value="LA">Louisiana</option>
-                                        <option value="ME">Maine</option>
-                                        <option value="MD">Maryland</option>
-                                        <option value="MA">Massachusetts</option>
-                                        <option value="MI">Michigan</option>
-                                        <option value="MN">Minnesota</option>
-                                        <option value="MS">Mississippi</option>
-                                        <option value="MO">Missouri</option>
-                                        <option value="MT">Montana</option>
-                                        <option value="NE">Nebraska</option>
-                                        <option value="NV">Nevada</option>
-                                        <option value="NH">New Hampshire</option>
-                                        <option value="NJ">New Jersey</option>
-                                        <option value="NM">New Mexico</option>
-                                        <option value="NY">New York</option>
-                                        <option value="NC">North Carolina</option>
-                                        <option value="ND">North Dakota</option>
-                                        <option value="OH">Ohio</option>
-                                        <option value="OK">Oklahoma</option>
-                                        <option value="OR">Oregon</option>
-                                        <option value="PA">Pennsylvania</option>
-                                        <option value="RI">Rhode Island</option>
-                                        <option value="SC">South Carolina</option>
-                                        <option value="SD">South Dakota</option>
-                                        <option value="TN">Tennessee</option>
-                                        <option value="TX">Texas</option>
-                                        <option value="UT">Utah</option>
-                                        <option value="VT">Vermont</option>
-                                        <option value="VA">Virginia</option>
-                                        <option value="WA">Washington</option>
-                                        <option value="WV">West Virginia</option>
-                                        <option value="WI">Wisconsin</option>
-                                        <option value="WY">Wyoming</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label for="inputZip">Zip</label>
-                                    <input type="text" class="form-control" id="inputZip">
-                                </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="modeOption" id="inlineRadio3" value="walk">
+                                <label class="form-check-label" for="inlineRadio3">Walk</label>
                             </div>
-                            <div class="form-group row">
-                                <div class="form-group col-md-4">
-                                    <label for="inputArrivalTime">Arrival Time</label>
-                                    <input type="text" class="form-control" id="arrival_time">
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="inputTransportation">Transportation</label>
-                                    <select id="destination_input" class="form-control">
-                                        <option selected>Option...</option>
-                                        <option value="W">Walk</option>
-                                        <option value="B">Bus</option>
-                                        <option value="D">Drive</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="inputTimeRemind">Time Remind</label>
-                                    <input type="text" class="form-control" id="time_remind_input">
-                                </div>
-                            </div>
+                        </div>
+                        <div class="form-group col-md-2 arr_time">
+                            <input type="text" class="form-control" id="frequency_input" placeholder="Remind me every">
+                        </div>
+                        <label for="frequency" class="col-md-1 control-label">minutes</label>
                     </div>
-                    <button class="btn btn-primary offset-md-10 col-md-2" id="add-information-btn" type="submit">Submit</button>
-                    </form>
+   
+                    
+    <!-- 2nd Section  Row 2: starting name or start place and street address -->
+                    <div class="form-group">
+                        <h4>Starting From</h4>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <input type="text" class="form-control" id="start_name_input" placeholder="Name: home..school..office">
+                            </div>
+                            <div class="form-group col-md-9">
+                                <input type="text" class="form-control" id="start_address_input" placeholder="Street Address...123 Main St">
+                            </div>
+                        </div>
+                    </div>
+
+    <!-- 2nd Section Row 3:   staring city name  state and zip code         -->
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <input type="text" class="form-control" id="start_city_input" placeholder="City Name">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <select id="start_state_input" class="form-control">
+                                <option selected>State</option>
+                                    <option value="AL">Alabama</option>
+                                    <option value="AK">Alaska</option>
+                                    <option value="AZ">Arizona</option>
+                                    <option value="AR">Arkansas</option>
+                                    <option value="CA">California</option>
+                                    <option value="CO">Colorado</option>
+                                    <option value="CT">Connecticut</option>
+                                    <option value="DE">Delaware</option>
+                                    <option value="DC">District Of Columbia</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="HI">Hawaii</option>
+                                    <option value="ID">Idaho</option>
+                                    <option value="IL">Illinois</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="IA">Iowa</option>
+                                    <option value="KS">Kansas</option>
+                                    <option value="KY">Kentucky</option>
+                                    <option value="LA">Louisiana</option>
+                                    <option value="ME">Maine</option>
+                                    <option value="MD">Maryland</option>
+                                    <option value="MA">Massachusetts</option>
+                                    <option value="MI">Michigan</option>
+                                    <option value="MN">Minnesota</option>
+                                    <option value="MS">Mississippi</option>
+                                    <option value="MO">Missouri</option>
+                                    <option value="MT">Montana</option>
+                                    <option value="NE">Nebraska</option>
+                                    <option value="NV">Nevada</option>
+                                    <option value="NH">New Hampshire</option>
+                                    <option value="NJ">New Jersey</option>
+                                    <option value="NM">New Mexico</option>
+                                    <option value="NY">New York</option>
+                                    <option value="NC">North Carolina</option>
+                                    <option value="ND">North Dakota</option>
+                                    <option value="OH">Ohio</option>
+                                    <option value="OK">Oklahoma</option>
+                                    <option value="OR">Oregon</option>
+                                    <option value="PA">Pennsylvania</option>
+                                    <option value="RI">Rhode Island</option>
+                                    <option value="SC">South Carolina</option>
+                                    <option value="SD">South Dakota</option>
+                                    <option value="TN">Tennessee</option>
+                                    <option value="TX">Texas</option>
+                                    <option value="UT">Utah</option>
+                                    <option value="VT">Vermont</option>
+                                    <option value="VA">Virginia</option>
+                                    <option value="WA">Washington</option>
+                                    <option value="WV">West Virginia</option>
+                                    <option value="WI">Wisconsin</option>
+                                    <option value="WY">Wyoming</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="text" class="form-control" id="start_zip_input" placeholder="Zip Code">
+                        </div>
+                    </div>
+
+<!-- 3rd Section  Row 4: ending name of end place and street address -->
+                    <div class="form-group">
+                        <h4>Going To</h4>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <input type="text" class="form-control" id="end_name_input" placeholder="Name: home..school..office">
+                            </div>
+                            <div class="form-group col-md-9">
+                                <input type="text" class="form-control" id="end_address_input" placeholder="Street Address...123 Main St">
+                            </div>
+                        </div>
+                    </div>
+<!-- 3rd Section Row 5:   end city name  state and zip code         -->              
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <input type="text" class="form-control" id="end_city_input" placeholder="City Name">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <select id="end_state_input" class="form-control">
+                            <option selected>State</option>
+                                <option value="AL">Alabama</option>
+                                <option value="AK">Alaska</option>
+                                <option value="AZ">Arizona</option>
+                                <option value="AR">Arkansas</option>
+                                <option value="CA">California</option>
+                                <option value="CO">Colorado</option>
+                                <option value="CT">Connecticut</option>
+                                <option value="DE">Delaware</option>
+                                <option value="DC">District Of Columbia</option>
+                                <option value="FL">Florida</option>
+                                <option value="GA">Georgia</option>
+                                <option value="HI">Hawaii</option>
+                                <option value="ID">Idaho</option>
+                                <option value="IL">Illinois</option>
+                                <option value="IN">Indiana</option>
+                                <option value="IA">Iowa</option>
+                                <option value="KS">Kansas</option>
+                                <option value="KY">Kentucky</option>
+                                <option value="LA">Louisiana</option>
+                                <option value="ME">Maine</option>
+                                <option value="MD">Maryland</option>
+                                <option value="MA">Massachusetts</option>
+                                <option value="MI">Michigan</option>
+                                <option value="MN">Minnesota</option>
+                                <option value="MS">Mississippi</option>
+                                <option value="MO">Missouri</option>
+                                <option value="MT">Montana</option>
+                                <option value="NE">Nebraska</option>
+                                <option value="NV">Nevada</option>
+                                <option value="NH">New Hampshire</option>
+                                <option value="NJ">New Jersey</option>
+                                <option value="NM">New Mexico</option>
+                                <option value="NY">New York</option>
+                                <option value="NC">North Carolina</option>
+                                <option value="ND">North Dakota</option>
+                                <option value="OH">Ohio</option>
+                                <option value="OK">Oklahoma</option>
+                                <option value="OR">Oregon</option>
+                                <option value="PA">Pennsylvania</option>
+                                <option value="RI">Rhode Island</option>
+                                <option value="SC">South Carolina</option>
+                                <option value="SD">South Dakota</option>
+                                <option value="TN">Tennessee</option>
+                                <option value="TX">Texas</option>
+                                <option value="UT">Utah</option>
+                                <option value="VT">Vermont</option>
+                                <option value="VA">Virginia</option>
+                                <option value="WA">Washington</option>
+                                <option value="WV">West Virginia</option>
+                                <option value="WI">Wisconsin</option>
+                                <option value="WY">Wyoming</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <input type="text" class="form-control" id="end_zip_input" placeholder="Zip Code">
+                    </div>
                 </div>
-            </div>
-        </div>
+<!-- Row 6:  Submit Button -->
+                    <div class="form-group">
+                        <button id="add-info" type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+        </form>
     </div>
-    <footer>
-        <div id="footer" class="container">
-            <h3 id="copyright">&copy Copyright 2018</h3>
-        </div>
-    </footer>
-    <!-- </div>
-    </div> -->
-    <!-- JavaScript -->
+
+    
+
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="assets/javascript/javascript.js"></script>
+    <script src="assets/javascript/map_api.js"></script>
+    <script src="assets/javascript/main.js"></script>
 </body>
 
 </html>
