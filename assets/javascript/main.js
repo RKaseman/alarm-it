@@ -91,10 +91,10 @@ var alertIt = {
                 endState: $("#end_state_input").val().trim(),
                 endZip: $("#end_zip_input").val().trim()
             }
-            console.log(getInput.name);
+           
             
 
-            //check to see that the input form has been completed before allowing start-aler button to be pushed
+    //*********** check to see that the input form has been completed before allowing start-aler button to be pushed
 
                 //if (name = "empty")
 
@@ -140,10 +140,9 @@ var alertIt = {
     start: function() {
         
         timeStarted = moment();
-        // $("#startTime-display").text(moment().format("hh:mm A"));
-        // $("#curTime-display").text(moment().format("hh:mm A"));
-        // // $("#arrTime-display").text(farrTime);
-        // $("#timeToGo-display").text(timeToGo);
+
+        //alertIt.updateUI();
+    
 
                         //start the countdown!
         if (!clockRunning) {
@@ -172,8 +171,8 @@ var alertIt = {
         $("#current_time_display").text("The current time is: " + moment().format("hh:mm A"));
         $("#arrival_time_display").text("Your planned arrival time at " + getInput.endName + " is: " + farrTime);
         // $("#timeToGo-display").text(timeToGo); // till arrival at destination
-        $("#travel_time_display").text("Travel time by " + getInpu.mode + " today is " + timeTravel + " minutes.");
-        $("#leave_minutes_display").text("You need to leave in " + timeOuttheDoor + "minutes."); // time till you need to be out the door
+        $("#travel_time_display").text("Travel time by " + getInput.mode + " today is " + timeTravel + " minutes.");
+        $("#leave_minutes_display").text("You need to leave in " + timeOuttheDoor + " minutes."); // time till you need to be out the door
        },
 
     generateMessage: function() {
@@ -187,7 +186,7 @@ var alertIt = {
             var nameText = getInput.name  + ", ";
             var midText = " you should have been out the door ";
             var endText = " minutes ago. Let's try it again tomorrow!";
-            var timeOuttheDoor = Math.abs(timeOuttheDoor);
+                timeOuttheDoor = Math.abs(timeOuttheDoor);
             clearInterval(intervalId);
 
         } else if (timeOuttheDoor < 15) {  // it's getting real close
@@ -206,14 +205,23 @@ var alertIt = {
         }
 
             textToVoice = greetText + nameText + midText + timeOuttheDoor + endText;
-            
+
             $("#alert_display").text(textToVoice);
             console.log(textToVoice);
        },
   
        getTimeTravel: function() {
-        //input from the map api goes here
-        return timeTravel = 10;  //a placeholder
+        //input from the map api goes here  
+
+        if (getInput.mode == "drive") {
+            timeTravel = 25;
+        } else if (getInput.mode == "bus") {
+            timeTravel = 45;
+        } else {
+            timeTravel = 75;
+        }
+
+        return timeTravel;  //a placeholder
 
        }
  //alertIt
