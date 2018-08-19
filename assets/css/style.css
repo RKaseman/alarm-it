@@ -24,8 +24,8 @@ img {
     height: 150px;
     width: 150px;
 }
-.btn {
-    /* adding spacing between each button*/
+/* .btn {
+   
     margin: 3px;
     background-color: blue;
     border-color: #fff;
@@ -35,7 +35,7 @@ img {
     width: 200px;
     margin-left: auto;
     margin-right: 5px;
-}
+} */
 .card-title{
     background: blue;
 }
@@ -79,3 +79,31 @@ div#footer {
 	left: 0;
 	text-align: center;
 }
+
+.radio-group {
+    /* margin-top: 35px; */
+    text-align: center;
+    
+    }
+    
+    .arr-time{
+        float: left;
+    }
+    
+    #mode-label {
+    
+        margin-right: 10px;
+    }
+    
+    .control-label {
+        margin-left: 10px;
+    }
+    
+    #start-input {
+        background-color: lightblue;
+    }
+    
+    .big-btn {
+        height: 175px;
+        line-height: 50px;
+    }

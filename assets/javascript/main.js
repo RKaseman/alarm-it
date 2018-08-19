@@ -14,8 +14,26 @@ var config = {
 
   var database = firebase.database();
  
+  var name = "empty";
+  var inTime = "empty";
+  var mode = "empty";
+  var frequency = "empty";
 
-var name = "John Doe";
+  var startName = "empty";
+  var startAddress = "empty";
+  var startCity = "empty";
+  var startState = "empty";
+  var startZip = "empty";
+
+  var endName = "empty";
+  var endAddress = "empty";
+  var endCity = "empty";
+  var endState = "empty";
+  var endZip = "empty";
+
+
+
+
 var inTime; //the user input directly from the type="time" button on setup
 var farrTime; // a formatted version of arrTime that will work in the moment syntax
 var arrTime; //supplied by use in set up on.click
@@ -24,9 +42,6 @@ var timeOuttheDoor= 0;  // this is the timeToGo minus travel time
 var timeStarted; //the actual time user started the countdown
 var timeTravel = 0;  //this is the travel time received from the map api
 var timeSinceStart = 0;  //this is the time the app was started, used to time frequence of messages
-var homeAddress;
-var destAddress;
-var frequency;  //this is the frequency of messages the use asked for in the setup
 var IntervalID;
 var clockRunning = false;
 var lastText = 0;  //used in alertIt.count to make sure don't generate the message more than once
@@ -41,8 +56,8 @@ var arrTextFill = [
                 ];
 
 var getInput;
-var timeToGoTest;
-var IntervalPeriod = (10 * 1000); //sets the time before checking status again 
+var IntervalPeriod = (10 * 1000); //sets the time interval for checking status again 
+var setUpComplete = false;
 
 $(document).ready(function(){
    
@@ -54,19 +69,57 @@ var alertIt = {
             event.preventDefault();
         
             // get user input values
-        
+           setUpComplete = false; 
+
            getInput = {
-                name: $("#name-in").val().trim(),
-                inTime: $("#arrTime-in").val().trim(),
-                homeAddress: $("#homeAddress-in").val().trim(),
-                destAddress: $("#destAddress-in").val().trim(),
-                frequency: parseInt($("#frequency-in").val().trim())
+
+            // top row:  name  arrival time   mode   and  frequency
+                name: $("#name_input").val().trim(),
+                inTime: $("#arrive_time").val().trim(),
+                mode: $('input:radio[name="modeOption"]:checked').val(),
+                frequency: parseInt($("#frequency_input").val().trim()),
+
+                startName: $("#start_name_input").val().trim(),
+                startAddress: $("#start_address_input").val().trim(),
+                startCity: $("#start_city_input").val().trim(),
+                startState: $("#start_state_input").val().trim(),
+                startZip: $("#start_zip_input").val().trim(),
+
+                endName: $("#end_name_input").val().trim(),
+                endAddress: $("#end_address_input").val().trim(),
+                endCity: $("#end_city_input").val().trim(),
+                endState: $("#end_state_input").val().trim(),
+                endZip: $("#end_zip_input").val().trim()
             }
+            console.log(getInput.name);
+            
+
+            //check to see that the input form has been completed before allowing start-aler button to be pushed
+
+                //if (name = "empty")
+
+            setUpComplete = true;
+
+
+            //note a radio button must be checked for mode or it will crash the page
+            // can also get the id value of the radio buttons this way:
+            //var selValue = $('input[name=rbnNumber]:checked').attr('id');
+
+
+            
         // start the countdown!
         
         $("#start-alert").on("click", function(event){
             event.preventDefault();
-            alertIt.start(); 
+
+            if (setUpComplete) { 
+                alertIt.start();
+            } else {
+                alert("Please complete all parts of the set up form and submit it.");
+                alertIt.setUp();
+            }
+
+             
         });
         
         // this is the end of the add-info click event
@@ -87,9 +140,9 @@ var alertIt = {
     start: function() {
         
         timeStarted = moment();
-        $("#startTime-display").text(moment().format("hh:mm A"));
-        $("#curTime-display").text(moment().format("hh:mm A"));
-        // $("#arrTime-display").text(farrTime);
+        // $("#startTime-display").text(moment().format("hh:mm A"));
+        // $("#curTime-display").text(moment().format("hh:mm A"));
+        // // $("#arrTime-display").text(farrTime);
         // $("#timeToGo-display").text(timeToGo);
 
                         //start the countdown!
@@ -115,12 +168,12 @@ var alertIt = {
 
     updateUI: function(){
 
-        $("#sincestartTime-display").text(timeSinceStart);
-        $("#curTime-display").text(moment().format("hh:mm A"));
-        $("#arrTime-display").text(farrTime);
-        $("#timeToGo-display").text(timeToGo); // till arrival at destination
-        $("#travelTime-display").text(timeTravel);
-        $("#leaveTime-display").text(timeOuttheDoor); // time till you need to be out the door
+        // $("#sincestartTime-display").text(timeSinceStart);
+        $("#current_time_display").text("The current time is: " + moment().format("hh:mm A"));
+        $("#arrival_time_display").text("Your planned arrival time at " + getInput.endName + " is: " + farrTime);
+        // $("#timeToGo-display").text(timeToGo); // till arrival at destination
+        $("#travel_time_display").text("Travel time by " + getInpu.mode + " today is " + timeTravel + " minutes.");
+        $("#leave_minutes_display").text("You need to leave in " + timeOuttheDoor + "minutes."); // time till you need to be out the door
        },
 
     generateMessage: function() {
@@ -153,6 +206,8 @@ var alertIt = {
         }
 
             textToVoice = greetText + nameText + midText + timeOuttheDoor + endText;
+            
+            $("#alert_display").text(textToVoice);
             console.log(textToVoice);
        },
   
