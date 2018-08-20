@@ -92,20 +92,43 @@ var alertIt = {
                 endState: $("#end_state_input").val().trim(),
                 endZip: $("#end_zip_input").val().trim()
             }
-           
-
+            // validate user input 
+        function checker() {
+           var invalidArray = []
+            for (var key in getInput) {
+                
+                if (!getInput[key]) {
+                    invalidArray.push(key);
+                }
+            }
+                // alert if user inputs are invalid
+            if(invalidArray.length) {
+                var field_alert = "";
+                for (let i = 0; i < invalidArray.length; i++) {
+                    field_alert += ", " + invalidArray[i];
+                    
+                }
+                alert("these inputs are invalid: " + field_alert);
+                return false;
+            } else {
+                return true;
+            }
+            
+        }
     //*********** check to see that the input form has been completed before allowing start-aler button to be pushed
 
                 //if (name = "empty")
-
-            setUpComplete = true;
+                if(checker()) {
+                    setUpComplete = true;
+                    alertIt.startCountDown()
+                } 
 
             //note a radio button must be checked for mode or it will crash the page
             // can also get the id value of the radio buttons this way:
             //var selValue = $('input[name=rbnNumber]:checked').attr('id');
             
         // start the countdown!
-        alertIt.startCountDown()
+        
         
         });
     },
