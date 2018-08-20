@@ -81,9 +81,7 @@ var alertIt = {
                 // navigator.geolocation.watchPosition(function (position) {
                 deviceLatitude = position.coords.latitude;
                 deviceLongitude = position.coords.longitude;
-                console.log("ok: ", deviceLatitude);
-                console.log("ok: ", deviceLongitude);
-                doAjax();
+                doAjaxGl();
             })
             // else warn and offer manual entry
         }
@@ -92,15 +90,13 @@ var alertIt = {
         }
 // ^ device geolocation
 
-        function doAjax() {
+        function doAjaxGl() {
 
             if (deviceLatitude && deviceLongitude) {
-
                 $.ajax({
                     url: "http://www.mapquestapi.com/geocoding/v1/reverse?key=" + apiKey + "&location=" + deviceLatitude + "," + deviceLongitude + "&includeRoadMetadata=true&includeNearestIntersection=true",
                     method: "GET"
                 }).then(function (response) {
-
                     var shortZip = response.results[0].locations[0].postalCode.split("-");
                     deviceLocation = response.results[0].locations[0].street + "," + response.results[0].locations[0].adminArea5 + "," + response.results[0].locations[0].adminArea3 + shortZip[0];
                     $("#start_address_input").val(response.results[0].locations[0].street);
@@ -111,50 +107,33 @@ var alertIt = {
                     console.log("ok : ", deviceLatitude);
                     console.log("ok : ", deviceLongitude);
                     console.log("ok : ", deviceLocSearchStr);
-                    console.log("? : ", origin);
 
-                }).then(function () {
-                    $.ajax({
-                        url: "https://www.mapquestapi.com/directions/v2/route?key=" + apiKey + "&from=" + deviceLocSearchStr + "&to=" + destSearchStr + "&outFormat=json&ambiguities=ignore&routeType=fastest&doReverseGeocode=false&enhancedNarrative=false&avoidTimedConditions=false",
-                        method: "GET"
-                    }).then(function (response) {
-
-                        timeEstimate = response.route.legs[0].formattedTime;
-                        console.log("timeEstimate : " + timeEstimate);
-                        console.log("deviceLocSearchStr : ", deviceLocSearchStr);
-                        console.log("destSearchStr : " + destSearchStr);
-
-                    }).then(function () {
-                        $.ajax({
-                            url: "https://www.mapquestapi.com/directions/v2/route?key=" + apiKey + "&from=" + deviceLocSearchStr + "&to=" + destSearchStr + "&outFormat=json&ambiguities=ignore&routeType=pedestrian&doReverseGeocode=false&enhancedNarrative=false&avoidTimedConditions=false",
-                            method: "GET"
-                        }).then(function (response) {
-                            timeEstimatePed = response.route.legs[0].formattedTime;
-                            console.log("timeEstimatePed : " + timeEstimatePed);
-                        })
-                    })
                 })
-            }
-        }
+            } // end doAjaxGl if
+        } // end doAjaxGl
 
-        // $("#add-info").on("click", function (event) {
-            // event.preventDefault();
-            // home = $("#start_address_input").val().trim();
-            // destination = $("#end_address_input").val().trim();
-            // destCity = $("#end_city_input").val().trim();
-            // destState = $("#end_state_input").val().trim();
-            // destZip = $("#end_zip_input").val().trim();
-            // streetStr = destination.replace(/\s/g, "+");
-            // destSearchStr = streetStr + "," + destCity + "," + destState + destZip;
-            // console.log("name : " + name);
-            // console.log("home : " + home);
-            // console.log("destination : " + destination);
-            // console.log("destCity : " + destCity);
-            // console.log("destState : " + destState);
-            // console.log("destZip : " + destZip);
-            // console.log("destSearchStr : " + destSearchStr);
-        // })
+        function doAjaxRt() {
+            $.ajax({
+                url: "https://www.mapquestapi.com/directions/v2/route?key=" + apiKey + "&from=" + deviceLocSearchStr + "&to=" + destSearchStr + "&outFormat=json&ambiguities=ignore&routeType=fastest&doReverseGeocode=false&enhancedNarrative=false&avoidTimedConditions=false",
+                method: "GET"
+            }).then(function (response) {
+                timeEstimate = response.route.legs[0].formattedTime;
+                console.log("deviceLocSearchStr : ", deviceLocSearchStr);
+                console.log("timeEstimate : " + timeEstimate);
+                console.log("destSearchStr : " + destSearchStr);
+                console.log(response);
+            })
+        } // end .then doAjaxRt
 
+        function doAjaxPed() {
+            $.ajax({
+                url: "https://www.mapquestapi.com/directions/v2/route?key=" + apiKey + "&from=" + deviceLocSearchStr + "&to=" + destSearchStr + "&outFormat=json&ambiguities=ignore&routeType=pedestrian&doReverseGeocode=false&enhancedNarrative=false&avoidTimedConditions=false",
+                method: "GET"
+            }).then(function (response) {
+                timeEstimatePed = response.route.legs[0].formattedTime;
+                console.log("timeEstimatePed : " + timeEstimatePed);
+            })
+        } // end .then doAjaxPed
 
         $("#add-info").on("click", function(event){
             event.preventDefault();
@@ -181,13 +160,18 @@ var alertIt = {
                 endState: $("#end_state_input").val().trim(),
                 endZip: $("#end_zip_input").val().trim()
             }
-console.log(getInput.startAddress);
-console.log(getInput.endAddress);
-console.log(getInput.endCity);
-console.log(getInput.endState);
-console.log(getInput.endZip);
-            streetStr = endAddress.replace(/\s/g, "+");
-            destSearchStr = streetStr + "," + endCity + "," + endState + endZip;
+
+                console.log(getInput.startAddress);
+                console.log(getInput.endAddress);
+                console.log(getInput.endCity);
+                console.log(getInput.endState);
+                console.log(getInput.endZip);
+                streetStr = getInput.endAddress.replace(/\s/g, "+");
+                destSearchStr = streetStr + "," + getInput.endCity + "," + getInput.endState + getInput.endZip;
+                console.log(destSearchStr);
+                console.log(streetStr);
+                doAjaxRt();
+                doAjaxPed();
 
     //*********** check to see that the input form has been completed before allowing start-aler button to be pushed
 
@@ -199,9 +183,10 @@ console.log(getInput.endZip);
             // can also get the id value of the radio buttons this way:
             //var selValue = $('input[name=rbnNumber]:checked').attr('id');
 
-        streetStr = getInput.endAddress.replace(/\s/g, "+");
-            console.log(streetStr);
+            // reset form fields
             $("form")[0].reset();
+
+
         // start the countdown!
         alertIt.startCountDown()
         
