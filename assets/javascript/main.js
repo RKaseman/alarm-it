@@ -176,8 +176,10 @@ var alertIt = {
     //*********** check to see that the input form has been completed before allowing start-aler button to be pushed
 
                 //if (name = "empty")
-
-            setUpComplete = true;
+                if(checker()) {
+                    setUpComplete = true;
+                    alertIt.startCountDown()
+                } 
 
             //note a radio button must be checked for mode or it will crash the page
             // can also get the id value of the radio buttons this way:
@@ -188,7 +190,7 @@ var alertIt = {
 
 
         // start the countdown!
-        alertIt.startCountDown()
+        
         
         });
     },
