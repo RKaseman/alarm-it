@@ -22,22 +22,22 @@
    
     <div class="container">
 
-      s
         <div class="jumbotron">
             <h1 class="display-4">On-Time!</h1>
             <p class="lead" id="alert_display">I'm here to help you get out the door on time!</p>
             <hr class="my-4">
         
             <div class="row">
-                <div class="col-md-4">
-                    <a id="start-alert" class="btn btn-primary btn-lg big-btn" href="#" role="button">Start the Countdown!</a>
-                </div>
+                
                 <div class="col-md-8">
-                    <p class="stats_display" id="current_time_display"></p>
+                    <p class="stats_display" id="current_time_display">All the important information will show up here.</p>
                     <p class="stats_display" id="arrival_time_display"></p>
                     <p class="stats_display" id="travel_time_display"></p>
                     <p  class="stats_display" id="leave_time_display"></p>
                     <p  class="stats_display" id="leave_minutes_display"></p>
+                </div>
+                <div class="col-md-4">
+                    <a id="start-alert" class="btn btn-primary btn-lg big-btn" href="#" role="button">Start the Countdown!</a>
                 </div>
             </div>
         </div>
@@ -46,6 +46,7 @@
             <form>
 
     <!--   1st section: Row 1:  name  arrival time   mode   and  frequency -->
+                <div id="form-show">
                     <div class="form-row">
                         <div class="form-group col-md-2">
                             <input type="text" class="form-control" id="name_input" placeholder="Name to use">
@@ -234,11 +235,12 @@
                     </div>
                 </div>
 <!-- Row 6:  Submit Button -->
-                    <div class="form-group">
+                    <div  class="form-group">
                         <button id="add-info" type="submit" class="btn btn-primary">Submit</button>
                     </div>
         </form>
-    </div>
+    </div>   
+ </div>
 
     
 
