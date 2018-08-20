@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>On Time</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+
+    <!-- <link rel="stylesheet" type="text/css" href="assets/css/style.css"> -->
+
+    <!-- Firebase Reference -->
+    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+
+    <!-- Moment.js Reference -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+
+</head>
+
+<body>
+   
+    <div class="container">
+
+        <div class="jumbotron">
+            <h1 class="display-4">On-Time!</h1>
+            <p class="lead" id="alert_display">I'm here to help you get out the door on time!</p>
+            <hr class="my-4">
+        
+            <div class="row">
+                
+                <div class="col-md-8">
+                    <p class="stats_display" id="current_time_display">All the important information will show up here.</p>
+                    <p class="stats_display" id="arrival_time_display"></p>
+                    <p class="stats_display" id="travel_time_display"></p>
+                    <p  class="stats_display" id="leave_time_display"></p>
+                    <p  class="stats_display" id="leave_minutes_display"></p>
+                </div>
+                <div class="col-md-4">
+                    <a id="start-alert" class="btn btn-primary btn-lg big-btn" href="#" role="button">Start the Countdown!</a>
+                </div>
+            </div>
+        </div>
+
+
+<!-- Row 6:  Submit Button -->
+                    <div  class="form-group">
+                        <button id="add-info" type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+        </form>
+    </div>   
+ </div>
+
+    
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- <script src="assets/javascript/map_api.js"></script>
+    <script src="assets/javascript/main.js"></script> -->
+
+
+<script>
+
+    var queryUrl ="http://api.voicerss.org/?key=0618ca0ae7d54300b36bdac29be7d593&hl&hl=en-us&src=Hello, world!";
+    var api= "0a7914a1376346ce8cee9c5045328467&hl=en-us&b64=true&";
+    var setWord= "src=" + alertIt.textToVoice;
+    var speekNow= queryUrl + setWord + '"';
+            $.ajax({
+            url: speekNow,
+            method:"get",
+
+      }).then(function(response) {
+          audioClip = document.createElement("audio");
+          audioClip.setAttribute("src", response);
+
+    });
+    console.log(queryUrl);
+
+
+</script>
+
+<!-- <script>
+        VoiceRSS.speech({
+            key: '0618ca0ae7d54300b36bdac29be7d593&hl',
+            src: 'Hello, world!',
+            hl: 'en-us',
+            r: 0, 
+            c: 'mp3',
+            f: '44khz_16bit_stereo',
+            ssml: false
+        });
+    </script> -->
+
+
+
+
+</body>
+
+</html>
