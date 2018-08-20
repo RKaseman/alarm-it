@@ -8,12 +8,12 @@
 
     var apiKey = "FX1GGwHVna3hSW5VqqYNR8FOjqQhDdlM";
 
-    // var deviceLatitude = 39.8427;
-    // var deviceLongitude = -104.9616;
-    // console.log(deviceLatitude);
-    // console.log(deviceLongitude);
-    // var deviceLocSearchStr;
-    // console.log(deviceLocSearchStr);
+    var deviceLatitude;
+    var deviceLongitude;
+    var deviceLocSearchStr;
+    console.log(deviceLatitude);
+    console.log(deviceLongitude);
+    console.log(deviceLocSearchStr);
     var origin = "2105+Coronado+Pkwy+N,Denver,CO80229";
     var dest = "1901+East+Asbury+Avenue,Denver,CO";
 
@@ -35,18 +35,17 @@
             deviceLongitude = position.coords.longitude;
             console.log(deviceLatitude);
             console.log(deviceLongitude);
-            if (deviceLatitude && deviceLongitude) {
-            doAjax()
-            };
-        });
+            doAjax();
+        })
         // else warn and offer manual entry
         }
         else {
             $("#home_location_input").attr("placeholder", "Geolocation is not available on this device. Enter current address.");
-        };
+        }
     // ^ device geolocation
 
     function doAjax() {
+        if (deviceLatitude && deviceLongitude) {
             $.ajax({
                 url: "http://www.mapquestapi.com/geocoding/v1/reverse?key=" + apiKey + "&location=" + deviceLatitude + "," + deviceLongitude + "&includeRoadMetadata=true&includeNearestIntersection=true",
                 method: "GET"
@@ -57,9 +56,8 @@
                 $("#start_state_input").val(response.results[0].locations[0].adminArea3);
                 $("#start_zip_input").val(response.results[0].locations[0].postalCode);
                 deviceLocSearchStr = deviceLocation.replace(/\s/g, "+");
-                console.log("deviceLocSearchStr : " + deviceLocSearchStr);
-                return(deviceLocSearchStr);
-            });
+                console.log(deviceLocSearchStr);
+            })
 
             $.ajax({
                 url: "https://www.mapquestapi.com/directions/v2/route?key=" + apiKey + "&from=" + origin + "&to=" + dest + "&outFormat=json&ambiguities=ignore&routeType=fastest&doReverseGeocode=false&enhancedNarrative=false&avoidTimedConditions=false",
@@ -67,7 +65,7 @@
             }).then(function (response) {
                 timeEstimate = response.route.legs[0].formattedTime;
                 console.log("timeEstimate : " + timeEstimate);
-            });
+            })
 
             $.ajax({
                 url: "https://www.mapquestapi.com/directions/v2/route?key=" + apiKey + "&from=" + origin + "&to=" + dest + "&outFormat=json&ambiguities=ignore&routeType=pedestrian&doReverseGeocode=false&enhancedNarrative=false&avoidTimedConditions=false",
@@ -75,9 +73,10 @@
             }).then(function (response) {
                 timeEstimatePed = response.route.legs[0].formattedTime;
                 console.log("timeEstimatePed : " + timeEstimatePed);
-            });
+            })
 
-    };
+        }
+    }
 
     $("#add-info").on("click", function (event) {
         event.preventDefault();
@@ -94,7 +93,7 @@
         console.log("destState : " + destState);
         console.log("destZip : " + destZip);
         console.log(event);
-    });
+    })
 
         $("form")[0].reset();
 
