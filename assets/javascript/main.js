@@ -59,8 +59,7 @@ $(document).ready(function(){
         var getInput;
         var IntervalPeriod = (10 * 1000); //sets the time interval for checking status again 
         var setUpComplete = false;
-        // var startMessage = "Good morning " + getInput.name + ", I'm pulling together the information for today, We will get started in a moment!";
-        // var firstMessage = true;
+        var firstMessage = false;
 
 
 var alertIt = {
@@ -92,17 +91,7 @@ var alertIt = {
                 endState: $("#end_state_input").val().trim(),
                 endZip: $("#end_zip_input").val().trim()
             }
-           
-
-    //*********** check to see that the input form has been completed before allowing start-aler button to be pushed
-
-                //if (name = "empty")
-
             setUpComplete = true;
-
-            //note a radio button must be checked for mode or it will crash the page
-            // can also get the id value of the radio buttons this way:
-            //var selValue = $('input[name=rbnNumber]:checked').attr('id');
             
         // start the countdown!
         alertIt.startCountDown()
@@ -123,8 +112,10 @@ var alertIt = {
         }
         $("#form-show").hide();
         $("#start-alert").hide();
-        $("#current_time_display").text("Hello! I'm pulling together all the information we need. Be with you in a moment! "); 
-        //generateMessage(firstMessage);
+        $("#current_time_display").text("Hello!"); 
+
+       firstMessage = true;
+        alertIt.generateMessage();
          
     });
    },
@@ -178,34 +169,52 @@ var alertIt = {
         textToVoice = ""
         var lng = arrTextFill.length;
 
-        if (timeOuttheDoor < 0){   //they are too late now
+        console.log("firstMsg: "  + firstMessage);
+        
+        if (firstMessage) {
 
-            var greetText = arrTextFill[Math.floor(Math.random() * lng)].late;
-            var nameText = getInput.name  + ", ";
-            var midText = " you should have been out the door ";
-            var endText = " minutes ago. Let's try it again tomorrow!";
-                timeOuttheDoor = Math.abs(timeOuttheDoor);
-            clearInterval(intervalId);
+            textToVoice = "Good morning " + getInput.name + ", It looks like a great day! I'll look forward to spending time with you today. I'll be back after you brush your teeth!";
 
-        } else if (timeOuttheDoor < 15) {  // it's getting real close
-
-            var greetText = arrTextFill[Math.floor(Math.random() * lng)].close;
-            var nameText = getInput.name + ", ";
-            var midText = " you only have ";
-            var endText = " minutes until you need to be out the door!";
-
-        } else {   //still plenty of time
-
-            var greetText = arrTextFill[Math.floor(Math.random() * lng)].ontime;
-            var nameText = getInput.name + ", ";
-            var midText = " you still have ";
-            var endText = " minutes until you need to be out the door.";
-        }
-
-            textToVoice = greetText + nameText + midText + timeOuttheDoor + endText;
+            firstMessage = false;
 
             $("#alert_display").text(textToVoice);
-            console.log(textToVoice);
+
+            console.log("first message2:"  +firstMessage);
+            
+
+            //alertIt.makeVoice();
+
+        } else {
+
+                if (timeOuttheDoor < 0){   //they are too late now
+
+                    var greetText = arrTextFill[Math.floor(Math.random() * lng)].late;
+                    var nameText = getInput.name  + ", ";
+                    var midText = " you should have been out the door ";
+                    var endText = " minutes ago. Let's try it again tomorrow!";
+                        timeOuttheDoor = Math.abs(timeOuttheDoor);
+                    clearInterval(intervalId);
+
+                } else if (timeOuttheDoor < 15) {  // it's getting real close
+
+                    var greetText = arrTextFill[Math.floor(Math.random() * lng)].close;
+                    var nameText = getInput.name + ", ";
+                    var midText = " you only have ";
+                    var endText = " minutes until you need to be out the door!";
+
+                } else {   //still plenty of time
+
+                    var greetText = arrTextFill[Math.floor(Math.random() * lng)].ontime;
+                    var nameText = getInput.name + ", ";
+                    var midText = " you still have ";
+                    var endText = " minutes until you need to be out the door.";
+                }
+
+                    textToVoice = greetText + nameText + midText + timeOuttheDoor + endText;
+                    $("#alert_display").text(textToVoice);
+                   // alertIt.makeVoice();
+                
+                    }
        },
   
        getTimeTravel: function() {
