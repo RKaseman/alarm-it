@@ -150,6 +150,24 @@ var alertIt = {
 
 
 
+        // https://open.mapquestapi.com/guidance/v1/route?key=KEY&from=1555+Blake+St.,+Denver,+CO+80202&to=1701+Wynkoop+St,+Denver,+CO+80202
+
+
+
+        // ajax bus time
+        function doAjaxBus() {
+            $.ajax({
+                url: "https://open.mapquestapi.com/guidance/v1/route?key=" + apiKey + "&from=" + deviceLocSearchStr + "&to=" + destSearchStr,
+                method: "GET"
+            }).then(function (response) {
+                console.log(response);
+                // timeEstimateBus = response.route.legs[0].formattedTime;
+                // console.log("timeEstimateBus bus : " + timeEstimateBus);
+            })
+        } // end .then doAjaxPed
+
+
+
 
         $("#add-info").on("click", function(event){
             event.preventDefault();
@@ -177,7 +195,6 @@ var alertIt = {
                 endZip: $("#end_zip_input").val().trim()
             }
 
-<<<<<<< HEAD
 
 
 
@@ -187,7 +204,7 @@ var alertIt = {
             console.log("ok: ", destSearchStr);
             doAjaxRt();
             doAjaxPed();
-=======
+            doAjaxBus();
             // validate user input
        function checker() {
         var invalidArray = []
@@ -232,7 +249,6 @@ var alertIt = {
                 console.log(streetStr);
                 doAjaxRt();
                 doAjaxPed();
->>>>>>> f3fac69d01ceb06a704ad9497983c3f6cddbc5b9
 
     
             //note a radio button must be checked for mode or it will crash the page
