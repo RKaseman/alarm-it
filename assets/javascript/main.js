@@ -70,6 +70,14 @@ $(document).ready(function(){
             {ontime: " minutes until we need to be out the door.  ",                 close:" minutes before it's too late to make it on time! "},
             {ontime: " minutes before we need to go.  ",                 close:" minutes to get going if we're going to be on time! "},
         ];
+
+        var firstMessageEnd = [ "I'll be back after you brush your teeth",
+                                "Have you ever considered going to a professional hair stylist?",
+                                "I'm sure today will be better than yesterday!",
+                                "You don't look like you slept very well last night.",
+                                "Are you as excited as I am about today?",
+                                "If you want to look your best today you better get started. You've got a long way to go."
+                                                                                ];
     
         var getInput;
         var IntervalPeriod = (10 * 1000); //sets the time interval in seconds for checking status again 
@@ -310,10 +318,8 @@ var alertIt = {
 
         if (firstMessage) {
 
-            textToVoice = "Good morning " + getInput.name + ", I'll look forward to spending time with you today. Based on a travel time of " + timeTravel + " minutes if you " + getInput.mode +  ", you will need to leave  here at " + formattedTimeToLeave + " to make it to " + getInput.endName + " by " + farrTime + ". That's "+ timeOuttheDoor + " minutes from now. It will be cloudy with a high of 75 today and a chance for rain this afternoon. I'll give you a few moments to brush your teeth and then I'll be back.";
+            textToVoice = "Good morning " + getInput.name + ", I'll look forward to spending time with you today. Based on a travel time of " + timeTravel + " minutes if you " + getInput.mode +  ", you will need to leave  here at " + formattedTimeToLeave + " to make it to " + getInput.endName + " by " + farrTime + ". That's "+ timeOuttheDoor + " minutes from now. It will be cloudy with a high of 75 today and a chance for rain this afternoon. " + firstMessageEnd[Math.floor(Math.random() * firstMessageEnd.length)];
 
-            console.log("text to voice first message: " + textToVoice);
-            
 
             firstMessage = false;
 
