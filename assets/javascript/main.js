@@ -68,8 +68,6 @@ var alertIt = {
     setUp: function() {
 
 
-
-
         var apiKey = "FX1GGwHVna3hSW5VqqYNR8FOjqQhDdlM";
         var deviceLatitude;
         var deviceLongitude;
@@ -91,8 +89,6 @@ var alertIt = {
             $("#home_location_input").attr("placeholder", "Geolocation is not available on this device. Enter current address.");
         }
         // ^ device geolocation
-
-
 
 
         // ajax geolocate
@@ -119,8 +115,6 @@ var alertIt = {
         } // end doAjaxGl
 
 
-
-
         // ajax drive time
         function doAjaxRt() {
             $.ajax({
@@ -135,8 +129,6 @@ var alertIt = {
         } // end .then doAjaxRt
 
 
-
-
         // ajax walk time
         function doAjaxPed() {
             $.ajax({
@@ -147,26 +139,6 @@ var alertIt = {
                 console.log("timeEstimatePed walk : " + timeEstimatePed);
             })
         } // end .then doAjaxPed
-
-
-
-        // https://open.mapquestapi.com/guidance/v1/route?key=KEY&from=1555+Blake+St.,+Denver,+CO+80202&to=1701+Wynkoop+St,+Denver,+CO+80202
-
-
-
-        // ajax bus time
-        function doAjaxBus() {
-            $.ajax({
-                url: "https://open.mapquestapi.com/guidance/v1/route?key=" + apiKey + "&from=" + deviceLocSearchStr + "&to=" + destSearchStr + "&outFormat=json&ambiguities=ignore&routeType=multimodal",
-                method: "GET"
-            }).then(function (response) {
-                console.log(response);
-                // timeEstimateBus = response.route.legs[0].formattedTime;
-                // console.log("timeEstimateBus bus : " + timeEstimateBus);
-            })
-        } // end .then doAjaxPed
-
-
 
 
         $("#add-info").on("click", function(event){
@@ -196,15 +168,15 @@ var alertIt = {
             }
 
 
-
-
             streetStr = getInput.endAddress.replace(/\s/g, "+");
             destSearchStr = streetStr + "," + getInput.endCity + "," + getInput.endState + getInput.endZip;
             console.log("ok: ", streetStr);
             console.log("ok: ", destSearchStr);
             doAjaxRt();
             doAjaxPed();
-            doAjaxBus();
+            // doAjaxBus();
+
+
             // validate user input
        function checker() {
         var invalidArray = []
