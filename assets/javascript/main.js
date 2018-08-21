@@ -47,17 +47,28 @@ $(document).ready(function(){
         var clockRunning = false;
         var lastText = 0;  //used in alertIt.count to make sure don't generate the message more than once
         var textToVoice = "I have nothing to say right now."
+
         var arrTextFill = [ 
             {ontime: "Hey ",                 close:"Getting Close ",           late: "Oh no! "},
             {ontime: "Well ",                close:"Don't dilly dally ",       late: "Uh oh! "},
             {ontime: "Lookin good ",         close:"Time's getting close ",    late: "Too Late! "},
-            {ontime: "Looks like a nice day ", close:"Don't panic, but ",         late: "Now were'r in trouble! "},
+            {ontime: "Looks like a nice day ", close:"Don't panic yet, but ",         late: "Now were'r in trouble! "},
             {ontime: "Hows it going ",       close:"Time to get with it ",     late: "This is not good! "},
             {ontime: "So ",                  close:"Not much time ",           late: "I hate to tell you this! "}
-                    ];
-        var arrTextFillFirst = [
-            {},
+        ];
 
+        var arrMidText = [
+            {ontime: " we're looking at  ",                 close:" I'm getting a little concerned here because we're down to only "},
+            {ontime: " we still have  ",                 close:" It's almost time to panic because we only have  "},
+            {ontime: " we don't have to rush because we still have  ",   close:" stop messing with your hair! We only have  "},
+            {ontime: " easy does it, we still have   ",                 close:" we don't want to be late! We only have  "},
+        ];
+
+        var arrEndText = [
+            {ontime: " minutes before time to leave.  ",                 close:" minutes before we gotta go! "},
+            {ontime: " minutes before it's time to go.  ",                 close:" minutes before we have to hit the road! "},
+            {ontime: " minutes until we need to be out the door.  ",                 close:" minutes before it's too late to make it on time! "},
+            {ontime: " minutes before we need to go.  ",                 close:" minutes to get going if we're going to be on time! "},
         ];
     
         var getInput;
@@ -299,7 +310,7 @@ var alertIt = {
 
         if (firstMessage) {
 
-            textToVoice = "Good morning " + getInput.name + ", I'll look forward to spending time with you today. Based on a travel time of " + timeTravel + " minutes if you " + getInput.mode +  ", you will need to leave  here at " + formattedTimeToLeave + " to make it to " + getInput.endName + " by " + farrTime + ". That's "+ timeOuttheDoor + " minutes from now. I'll give you a few moments to brush your teeth and then I'll be back.";
+            textToVoice = "Good morning " + getInput.name + ", I'll look forward to spending time with you today. Based on a travel time of " + timeTravel + " minutes if you " + getInput.mode +  ", you will need to leave  here at " + formattedTimeToLeave + " to make it to " + getInput.endName + " by " + farrTime + ". That's "+ timeOuttheDoor + " minutes from now. It will be cloudy with a high of 75 today and a chance for rain this afternoon. I'll give you a few moments to brush your teeth and then I'll be back.";
 
             console.log("text to voice first message: " + textToVoice);
             
@@ -314,26 +325,26 @@ var alertIt = {
 
                 if (timeOuttheDoor < 0){   //they are too late now
 
-                     greetText = arrTextFill[Math.floor(Math.random() * lng)].late;
+                     greetText = arrTextFill[Math.floor(Math.random() * arrTextFill.length)].late;
                      nameText = getInput.name  + ", ";
-                     midText = " you should have been out the door ";
+                     midText = " we're not going to make it on time are we? We should have been out the door ";
                      endText = " minutes ago. Let's try it again tomorrow!";
                         timeOuttheDoor = Math.abs(timeOuttheDoor);
                     clearInterval(intervalId);
 
                 } else if (timeOuttheDoor < 15) {  // it's getting real close
 
-                     greetText = arrTextFill[Math.floor(Math.random() * lng)].close;
+                     greetText = arrTextFill[Math.floor(Math.random() * arrTextFill.length)].close;
                      nameText = getInput.name + ", ";
-                     midText = " you only have ";
-                     endText = " minutes until you need to be out the door!";
+                     midText = arrMidText[Math.floor(Math.random() * arrMidText.length)].close;
+                     endText = arrEndText[Math.floor(Math.random() * arrEndText.length)].close;
 
                 } else {   //still plenty of time
 
-                     greetText = arrTextFill[Math.floor(Math.random() * lng)].ontime;
+                     greetText = arrTextFill[Math.floor(Math.random() * arrTextFill.length)].ontime;
                      nameText = getInput.name + ", ";
-                     midText = " you still have ";
-                     endText = " minutes until you need to be out the door.";
+                     midText = arrMidText[Math.floor(Math.random() * arrMidText.length)].ontime;
+                     endText = arrEndText[Math.floor(Math.random() * arrEndText.length)].ontime;
                 }
 
                     textToVoice = greetText + nameText + midText + timeOuttheDoor + endText;
