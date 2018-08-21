@@ -18,22 +18,22 @@ $(document).ready(function(){
     
         var database = firebase.database();
         
-        var name = "empty";
-        var inTime = "empty";
-        var mode = "empty";
-        var frequency = "empty";
+        var name;
+        var inTime;
+        var mode;
+        var frequency;
     
-        var startName = "empty";
-        var startAddress = "empty";
-        var startCity = "empty";
-        var startState = "empty";
-        var startZip = "empty";
+        var startName;
+        var startAddress;
+        var startCity;
+        var startState;
+        var startZip;
     
-        var endName = "empty";
-        var endAddress = "empty";
-        var endCity = "empty";
-        var endState = "empty";
-        var endZip = "empty";
+        var endName;
+        var endAddress;
+        var endCity;
+        var endState;
+        var endZip;
     
         var inTime; //the user input directly from the type="time" button on setup
         var farrTime; // a formatted version of arrTime that will work in the moment syntax
@@ -48,19 +48,25 @@ $(document).ready(function(){
         var lastText = 0;  //used in alertIt.count to make sure don't generate the message more than once
         var textToVoice = "I have nothing to say right now."
         var arrTextFill = [ 
-                        {ontime: "Hey ",                 close:"Getting Close ",           late: "Oh no! "},
-                        {ontime: "Well ",                close:"Don't dilly dally ",       late: "Uh oh! "},
-                        {ontime: "Lookin good ",         close:"Time's getting close ",    late: "Too Late! "},
-                        {ontime: "Looks like a nice day ",            close:"Don't panic, but ",         late: "Now were'r in trouble! "},
-                        {ontime: "Hows it going ",       close:"Time to get with it ",     late: "This is not good! "},
-                        {ontime: "So ",                  close:"Not much time ",           late: "I hate to tell you this! "}
+            {ontime: "Hey ",                 close:"Getting Close ",           late: "Oh no! "},
+            {ontime: "Well ",                close:"Don't dilly dally ",       late: "Uh oh! "},
+            {ontime: "Lookin good ",         close:"Time's getting close ",    late: "Too Late! "},
+            {ontime: "Looks like a nice day ", close:"Don't panic, but ",         late: "Now were'r in trouble! "},
+            {ontime: "Hows it going ",       close:"Time to get with it ",     late: "This is not good! "},
+            {ontime: "So ",                  close:"Not much time ",           late: "I hate to tell you this! "}
                     ];
+        var arrTextFillFirst = [
+            {},
+
+        ];
     
         var getInput;
-        var IntervalPeriod = (10 * 1000); //sets the time interval for checking status again 
+        var IntervalPeriod = (10 * 1000); //sets the time interval in seconds for checking status again 
         var setUpComplete = false;
         var firstMessage = false;
         var speakNow;
+        var timeToLeave;
+        var formattedTimeToLeave;
 
 
 var alertIt = {
@@ -206,18 +212,11 @@ var alertIt = {
                 doAjaxRt();
                 doAjaxPed();
 
-    
-            //note a radio button must be checked for mode or it will crash the page
-            // can also get the id value of the radio buttons this way:
-            //var selValue = $('input[name=rbnNumber]:checked').attr('id');
 
             // reset form fields
             $("form")[0].reset();
 
-
-
         // start the countdown!
-        
         
         });
     },
@@ -237,7 +236,9 @@ var alertIt = {
         $("#start-alert").hide();
         $("#current_time_display").text("Hello!"); 
 
-       firstMessage = true;
+        alertIt.calcTimes();
+
+        firstMessage = true;
         alertIt.generateMessage();
          
     });
@@ -245,11 +246,13 @@ var alertIt = {
 
     calcTimes: function() {
         arrTime = moment().hour(parseInt(getInput.inTime.charAt(0) + getInput.inTime.charAt(1))).minute(parseInt(getInput.inTime.charAt(3) + getInput.inTime.charAt(4)));
-        farrTime = arrTime.format("HH:mm");
+        farrTime = arrTime.format("hh:mm A");
         timeToGo = arrTime.diff(moment(),"minutes");
         timeTravel = alertIt.getTimeTravel();
         timeOuttheDoor = timeToGo - timeTravel;  //timeTravle not found yet  from map api
         timeSinceStart = moment().diff(timeStarted, "minutes");
+        timeToLeave = arrTime.subtract(timeTravel,"minutes");
+        formattedTimeToLeave = timeToLeave.format("hh:mm A");
 
     },
 
@@ -284,6 +287,8 @@ var alertIt = {
         $("#current_time_display").text("The current time is: " + moment().format("hh:mm A"));
         $("#arrival_time_display").text("Your planned arrival time at " + getInput.endName + " is: " + farrTime);
         $("#travel_time_display").text("Travel time by " + getInput.mode + " today is " + timeTravel + " minutes.");
+        $("#leave_time_display").text("You need to leave here by: " + formattedTimeToLeave);
+
         $("#leave_minutes_display").text("You need to leave in " + timeOuttheDoor + " minutes."); 
        },
 
@@ -292,18 +297,16 @@ var alertIt = {
         textToVoice = ""
         var lng = arrTextFill.length;
 
-        console.log("firstMsg: "  + firstMessage);
-        
         if (firstMessage) {
 
-            textToVoice = "Good morning " + getInput.name + ", It looks like a great day! I'll look forward to spending time with you today. I'll be back after you brush your teeth!";
+            textToVoice = "Good morning " + getInput.name + ", I'll look forward to spending time with you today. Based on a travel time of " + timeTravel + " minutes if you " + getInput.mode +  ", you will need to leave  here at " + formattedTimeToLeave + " to make it to " + getInput.endName + " by " + farrTime + ". That's "+ timeOuttheDoor + " minutes from now. I'll give you a few moments to brush your teeth and then I'll be back.";
+
+            console.log("text to voice first message: " + textToVoice);
+            
 
             firstMessage = false;
 
             $("#alert_display").text(textToVoice);
-
-            console.log("first message2:"  + firstMessage);
-            
 
             alertIt.makeVoice();
 
@@ -344,9 +347,6 @@ var alertIt = {
         var audioClip;
         var queryUrl ="http://api.voicerss.org/?key=6d2a15e828bf429d94e8584c50d4accd&hl=en-us&b64=true&";
         var setWord= "src=" + textToVoice;
-        console.log("======: ", queryUrl);
-        console.log("tex2vc: ", textToVoice);
-        console.log("======: ", setWord);
         var speekNow= queryUrl + setWord;
                 $.ajax({
                 url:speekNow,
