@@ -59,8 +59,8 @@ $(document).ready(function(){
         var getInput;
         var IntervalPeriod = (10 * 1000); //sets the time interval for checking status again 
         var setUpComplete = false;
-        // var startMessage = "Good morning " + getInput.name + ", I'm pulling together the information for today, We will get started in a moment!";
-        // var firstMessage = true;
+        var firstMessage = false;
+        var speakNow;
 
 
 var alertIt = {
@@ -177,6 +177,7 @@ var alertIt = {
                 endZip: $("#end_zip_input").val().trim()
             }
 
+<<<<<<< HEAD
 
 
 
@@ -186,8 +187,32 @@ var alertIt = {
             console.log("ok: ", destSearchStr);
             doAjaxRt();
             doAjaxPed();
+=======
+            // validate user input
+       function checker() {
+        var invalidArray = []
+         for (var key in getInput) {
 
-    //*********** check to see that the input form has been completed before allowing start-aler button to be pushed
+             if (!getInput[key]) {
+                 invalidArray.push(key);
+             }
+         }
+             // alert if user inputs are invalid
+         if(invalidArray.length) {
+             var field_alert = "";
+             for (let i = 0; i < invalidArray.length; i++) {
+                 field_alert += ", " + invalidArray[i];
+
+             }
+             alert("these inputs are invalid: " + field_alert);
+             return false;
+         } else {
+             return true;
+         }
+
+     }
+            
+//*********** check to see that the input form has been completed before allowing start-aler button to be pushed
 
                 //if (name = "empty")
                 if(checker()) {
@@ -195,12 +220,28 @@ var alertIt = {
                     alertIt.startCountDown()
                 } 
 
+
+                console.log(getInput.startAddress);
+                console.log(getInput.endAddress);
+                console.log(getInput.endCity);
+                console.log(getInput.endState);
+                console.log(getInput.endZip);
+                streetStr = getInput.endAddress.replace(/\s/g, "+");
+                destSearchStr = streetStr + "," + getInput.endCity + "," + getInput.endState + getInput.endZip;
+                console.log(destSearchStr);
+                console.log(streetStr);
+                doAjaxRt();
+                doAjaxPed();
+>>>>>>> f3fac69d01ceb06a704ad9497983c3f6cddbc5b9
+
+    
             //note a radio button must be checked for mode or it will crash the page
             // can also get the id value of the radio buttons this way:
             //var selValue = $('input[name=rbnNumber]:checked').attr('id');
 
             // reset form fields
             $("form")[0].reset();
+
 
 
         // start the countdown!
@@ -222,8 +263,10 @@ var alertIt = {
         }
         $("#form-show").hide();
         $("#start-alert").hide();
-        $("#current_time_display").text("Hello! I'm pulling together all the information we need. Be with you in a moment! "); 
-        //generateMessage(firstMessage);
+        $("#current_time_display").text("Hello!"); 
+
+       firstMessage = true;
+        alertIt.generateMessage();
          
     });
    },
@@ -277,36 +320,78 @@ var alertIt = {
         textToVoice = ""
         var lng = arrTextFill.length;
 
-        if (timeOuttheDoor < 0){   //they are too late now
+        console.log("firstMsg: "  + firstMessage);
+        
+        if (firstMessage) {
 
-            var greetText = arrTextFill[Math.floor(Math.random() * lng)].late;
-            var nameText = getInput.name  + ", ";
-            var midText = " you should have been out the door ";
-            var endText = " minutes ago. Let's try it again tomorrow!";
-                timeOuttheDoor = Math.abs(timeOuttheDoor);
-            clearInterval(intervalId);
+            textToVoice = "Good morning " + getInput.name + ", It looks like a great day! I'll look forward to spending time with you today. I'll be back after you brush your teeth!";
 
-        } else if (timeOuttheDoor < 15) {  // it's getting real close
-
-            var greetText = arrTextFill[Math.floor(Math.random() * lng)].close;
-            var nameText = getInput.name + ", ";
-            var midText = " you only have ";
-            var endText = " minutes until you need to be out the door!";
-
-        } else {   //still plenty of time
-
-            var greetText = arrTextFill[Math.floor(Math.random() * lng)].ontime;
-            var nameText = getInput.name + ", ";
-            var midText = " you still have ";
-            var endText = " minutes until you need to be out the door.";
-        }
-
-            textToVoice = greetText + nameText + midText + timeOuttheDoor + endText;
+            firstMessage = false;
 
             $("#alert_display").text(textToVoice);
-            console.log(textToVoice);
+
+            console.log("first message2:"  + firstMessage);
+            
+
+            alertIt.makeVoice();
+
+        } else {
+
+                if (timeOuttheDoor < 0){   //they are too late now
+
+                     greetText = arrTextFill[Math.floor(Math.random() * lng)].late;
+                     nameText = getInput.name  + ", ";
+                     midText = " you should have been out the door ";
+                     endText = " minutes ago. Let's try it again tomorrow!";
+                        timeOuttheDoor = Math.abs(timeOuttheDoor);
+                    clearInterval(intervalId);
+
+                } else if (timeOuttheDoor < 15) {  // it's getting real close
+
+                     greetText = arrTextFill[Math.floor(Math.random() * lng)].close;
+                     nameText = getInput.name + ", ";
+                     midText = " you only have ";
+                     endText = " minutes until you need to be out the door!";
+
+                } else {   //still plenty of time
+
+                     greetText = arrTextFill[Math.floor(Math.random() * lng)].ontime;
+                     nameText = getInput.name + ", ";
+                     midText = " you still have ";
+                     endText = " minutes until you need to be out the door.";
+                }
+
+                    textToVoice = greetText + nameText + midText + timeOuttheDoor + endText;
+                    $("#alert_display").text(textToVoice);
+                    alertIt.makeVoice();
+                
+                    }
        },
   
+       makeVoice: function(){
+        var audioClip;
+        var queryUrl ="http://api.voicerss.org/?key=6d2a15e828bf429d94e8584c50d4accd&hl=en-us&b64=true&";
+        var setWord= "src=" + textToVoice;
+        console.log("======: ", queryUrl);
+        console.log("tex2vc: ", textToVoice);
+        console.log("======: ", setWord);
+        var speekNow= queryUrl + setWord;
+                $.ajax({
+                url:speekNow,
+                method:"get",
+ 
+          }).then(function(response) {
+              audioClip = document.createElement("audio");
+              audioClip.setAttribute("src", response);
+              audioClip.play();
+ 
+        });
+        console.log(textToVoice);
+        console.log(speekNow);
+        console.log(setWord);
+       },
+
+
        getTimeTravel: function() {
         //input from the map api goes here  
 
