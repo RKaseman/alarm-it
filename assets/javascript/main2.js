@@ -1,3 +1,21 @@
+Skip to content
+ 
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ @tomkent321 Sign out
+0
+0 0 Genjosh/alarm-it
+ Code  Issues 0  Pull requests 2  Projects 1  Wiki  Insights
+alarm-it/assets/javascript/main.js
+1c2303a  13 hours ago
+@tomkent321 tomkent321 last text addition for mon
+@tomkent321 @RKaseman @joayang @Genjosh
+     
+405 lines (311 sloc)  16.2 KB
 
 
 
@@ -42,7 +60,6 @@ $(document).ready(function(){
         var timeOuttheDoor= 0;  // this is the timeToGo minus travel time
         var timeStarted; //the actual time user started the countdown
         var timeTravel = 0;  //this is the travel time received from the map api
-        var lastTimeTravel=0;
         var timeSinceStart = 0;  //this is the time the app was started, used to time frequence of messages
         var IntervalID;
         var clockRunning = false;
@@ -87,13 +104,6 @@ $(document).ready(function(){
         var speekNow;
         var timeToLeave;
         var formattedTimeToLeave;
-        var addTravelTime = false;
-        var timeEstimate;
-        var timeEstimatePed;
-
-        var voiceApiKey = "d4179c30c3ce43a39729ee47dca9f840"; //  6d2a15e828bf429d94e8584c50d4accd&hl=en-us&b64
-
-
 
 
 var alertIt = {
@@ -137,6 +147,9 @@ var alertIt = {
                     $("#start_state_input").val(response.results[0].locations[0].adminArea3);
                     $("#start_zip_input").val(response.results[0].locations[0].postalCode);
                     deviceLocSearchStr = deviceLocation.replace(/\s/g, "+");
+                    console.log("ok : ", deviceLatitude);
+                    console.log("ok : ", deviceLongitude);
+                    console.log("ok : ", deviceLocSearchStr);
 
                 })
             } // end doAjaxGl if
@@ -148,6 +161,10 @@ var alertIt = {
                 method: "GET"
             }).then(function (response) {
                 timeEstimate = response.route.legs[0].formattedTime;
+                console.log("deviceLocSearchStr : ", deviceLocSearchStr);
+                console.log("timeEstimate : " + timeEstimate);
+                console.log("destSearchStr : " + destSearchStr);
+                console.log(response);
             })
         } // end .then doAjaxRt
 
@@ -157,6 +174,7 @@ var alertIt = {
                 method: "GET"
             }).then(function (response) {
                 timeEstimatePed = response.route.legs[0].formattedTime;
+                console.log("timeEstimatePed : " + timeEstimatePed);
             })
         } // end .then doAjaxPed
 
@@ -217,8 +235,17 @@ var alertIt = {
                     setUpComplete = true;
                     alertIt.startCountDown()
                 } 
+
+
+                console.log(getInput.startAddress);
+                console.log(getInput.endAddress);
+                console.log(getInput.endCity);
+                console.log(getInput.endState);
+                console.log(getInput.endZip);
                 streetStr = getInput.endAddress.replace(/\s/g, "+");
                 destSearchStr = streetStr + "," + getInput.endCity + "," + getInput.endState + getInput.endZip;
+                console.log(destSearchStr);
+                console.log(streetStr);
                 doAjaxRt();
                 doAjaxPed();
 
@@ -236,6 +263,8 @@ var alertIt = {
     $("#start-alert").on("click", function(event){
         event.preventDefault();
 
+            alertIt.start();
+    
         $("#form-show").hide();
         $("#start-alert").hide();
         $("#current_time_display").text("Hello!"); 
@@ -243,7 +272,8 @@ var alertIt = {
         alertIt.calcTimes();
 
         firstMessage = true;
-        alertIt.generateMessage();
+        // alertIt.generateMessage();
+
         alertIt.start();
          
     });
@@ -253,13 +283,11 @@ var alertIt = {
         arrTime = moment().hour(parseInt(getInput.inTime.charAt(0) + getInput.inTime.charAt(1))).minute(parseInt(getInput.inTime.charAt(3) + getInput.inTime.charAt(4)));
         farrTime = arrTime.format("hh:mm A");
         timeToGo = arrTime.diff(moment(),"minutes");
-        timeTravel = this.getTimeTravel();
-        lastTimeTravel = timeTravel;
+        timeTravel = alertIt.getTimeTravel();
         timeOuttheDoor = timeToGo - timeTravel;  //timeTravle not found yet  from map api
         timeSinceStart = moment().diff(timeStarted, "minutes");
         timeToLeave = arrTime.subtract(timeTravel,"minutes");
         formattedTimeToLeave = timeToLeave.format("hh:mm A");
-        
 
     },
 
@@ -277,16 +305,16 @@ var alertIt = {
     count: function() {
             alertIt.calcTimes();
 
+
     // Check to see if it is time to generate a reminder
         if (timeSinceStart > 0 && timeSinceStart % getInput.frequency == 0 && timeSinceStart != lastText) {
             alertIt.generateMessage();
         } 
-    
+
         lastText = moment().diff(timeStarted, "minutes");
 
-    //check to see if time travel has increased
-
             alertIt.updateUI();
+
        },
 
     updateUI: function(){
@@ -341,23 +369,16 @@ var alertIt = {
                      endText = arrEndText[Math.floor(Math.random() * arrEndText.length)].ontime;
                 }
 
-
-                if (addTravelTime) {
-                    midText = "our travel time has just increased to " + timeTravel + "minutes so " + midText;
-                    addTravelTime = false;
-                }
-
-
                     textToVoice = greetText + nameText + midText + timeOuttheDoor + endText;
                     $("#alert_display").text(textToVoice);
-                   alertIt.makeVoice();
+                    alertIt.makeVoice();
                 
                     }
        },
   
        makeVoice: function(){
         var audioClip;
-        var queryUrl ="http://api.voicerss.org/?key=" + voiceApiKey+  "&hl=en-us&b64=true&";
+        var queryUrl ="http://api.voicerss.org/?key=6d2a15e828bf429d94e8584c50d4accd&hl=en-us&b64=true&";
         var setWord= "src=" + textToVoice;
         var speekNow= queryUrl + setWord;
                 $.ajax({
@@ -370,49 +391,24 @@ var alertIt = {
               audioClip.play();
  
         });
+        console.log(textToVoice);
+        console.log(speekNow);
+        console.log(setWord);
        },
 
 
        getTimeTravel: function() {
-       
-            var driveTimeIn = timeEstimate;
-        
-            var h1 = driveTimeIn.charAt(0);
-            var h2 = driveTimeIn.charAt(1);
-            var hc = h1 + h2;
-            var hi = parseInt(hc) * 60;
+        //input from the map api goes here  
 
-            var m1 = driveTimeIn.charAt(3);
-            var m2 = driveTimeIn.charAt(4);
-            var mc = m1 + m2;
-            var mi = parseInt(mc);
-            
-            var driveTime = hi + mi;
-
-            var walkTimeIn = timeEstimatePed;
-        
-            var h1 = walkTimeIn.charAt(0);
-            var h2 = walkTimeIn.charAt(1);
-            var hc = h1 + h2;
-            var hi = parseInt(hc) * 60;
-
-            var m1 = walkTimeIn.charAt(3);
-            var m2 = walkTimeIn.charAt(4);
-            var mc = m1 + m2;
-            var mi = parseInt(mc);
-            
-            var walkTime = hi + mi;
-
-            
         if (getInput.mode == "drive") {
-            timeTravel = driveTime;
+            timeTravel = 25;
         } else if (getInput.mode == "bus") {
-            timeTravel = driveTime + 30;
+            timeTravel = 45;
         } else {
-            timeTravel = walkTime;
+            timeTravel = 75;
         }
 
-        return timeTravel;  
+        return timeTravel;  //a placeholder
 
        }
  //alertIt
