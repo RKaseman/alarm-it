@@ -1,15 +1,26 @@
 body{
-	/* background: url("../images/background.jpg");
-	background-size: 100%;
-    background-repeat: no-repeat;
+	background: url("../images/background.jpg");
+    background-size: cover;
     color: black;
-    width: 100%;
-    background-attachment: fixed; */
+
+    /* background-attachment: fixed; */
 }
 * {
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 
+h1.display-4{
+    font-weight: 900;
+    color: rgb(243, 240, 239);
+    font-size: 13vw;
+}
+p.lead{
+    font-weight: 500;
+}
+
+p.stats_display{
+    font-weight: 500;
+}
 .card {
     border-width: 2px;
     border-color: black;
@@ -20,50 +31,39 @@ h3 {
 	padding-bottom: 5px;
 	text-align: center;
 }
-img { 
-    height: 150px;
-    width: 150px;
+
+.btn {
+    background-color: rgb(230, 238, 240);
+    color:black;
 }
-/* .btn {
-   
-    margin: 3px;
-    background-color: blue;
-    border-color: #fff;
-    border-radius: 5px;
-    color: #fff;
-    opacity: 0.8;
-    width: 200px;
-    margin-left: auto;
-    margin-right: 5px;
-} */
-.card-title{
-    background: blue;
+
+.form-control {
+    border: 1px solid black;
 }
-.gifDiv{
-    /* making the images go in one line rather than block & adding spacing between the images*/
-    float: left;
-    margin: 3px;
+ 
+.container{
+    background-color: rgb(236, 231, 226);
+    /* border-radius: 10px; */
 }
-.container {
-	background-color: #fff;
-	opacity: 0.6;
-    padding: 20px;
-    width: 100% auto;
+.thick{
+    font-weight: 900;
 }
-/* .text-center{
+.text-center{
     background-color: blue;
     height: 80px;
     width: auto;
     text-align: center;    
-} */
-/* .jumbotron {
-    background-color: blue;
-    height: 100px;
 }
-.jumbotron .h1, .jumbotron h1 {
-    text-align: center;
-    float: top;
-} */
+
+.btn {
+    background-color: rgb(240, 245, 247);
+}
+.jumbotron {
+    border: 2.5px solid rgb(153, 67, 17);
+    border-radius: 10px;
+    background: rgb(58, 148, 170);
+    text-decoration-style: dashed;
+}
 .text-center{
     background-color: bisque;
     padding: 10px;
@@ -106,6 +106,13 @@ div#footer {
     .big-btn {
         height: 175px;
         line-height: 50px;
+    }
+    #start-alert {
+        height: 60px;
+        width: 220px;
+        text-align: center;
+        font-weight: 600;
+        color: black;
     }
 
     
