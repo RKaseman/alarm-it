@@ -68,6 +68,8 @@ var alertIt = {
     setUp: function() {
 
 
+
+
         var apiKey = "FX1GGwHVna3hSW5VqqYNR8FOjqQhDdlM";
         var deviceLatitude;
         var deviceLongitude;
@@ -88,8 +90,12 @@ var alertIt = {
         else {
             $("#home_location_input").attr("placeholder", "Geolocation is not available on this device. Enter current address.");
         }
-// ^ device geolocation
+        // ^ device geolocation
 
+
+
+
+        // ajax geolocate
         function doAjaxGl() {
 
             if (deviceLatitude && deviceLongitude) {
@@ -112,6 +118,10 @@ var alertIt = {
             } // end doAjaxGl if
         } // end doAjaxGl
 
+
+
+
+        // ajax drive time
         function doAjaxRt() {
             $.ajax({
                 url: "https://www.mapquestapi.com/directions/v2/route?key=" + apiKey + "&from=" + deviceLocSearchStr + "&to=" + destSearchStr + "&outFormat=json&ambiguities=ignore&routeType=fastest&doReverseGeocode=false&enhancedNarrative=false&avoidTimedConditions=false",
@@ -119,21 +129,27 @@ var alertIt = {
             }).then(function (response) {
                 timeEstimate = response.route.legs[0].formattedTime;
                 console.log("deviceLocSearchStr : ", deviceLocSearchStr);
-                console.log("timeEstimate : " + timeEstimate);
                 console.log("destSearchStr : " + destSearchStr);
-                console.log(response);
+                console.log("timeEstimate drive : " + timeEstimate);
             })
         } // end .then doAjaxRt
 
+
+
+
+        // ajax walk time
         function doAjaxPed() {
             $.ajax({
                 url: "https://www.mapquestapi.com/directions/v2/route?key=" + apiKey + "&from=" + deviceLocSearchStr + "&to=" + destSearchStr + "&outFormat=json&ambiguities=ignore&routeType=pedestrian&doReverseGeocode=false&enhancedNarrative=false&avoidTimedConditions=false",
                 method: "GET"
             }).then(function (response) {
                 timeEstimatePed = response.route.legs[0].formattedTime;
-                console.log("timeEstimatePed : " + timeEstimatePed);
+                console.log("timeEstimatePed walk : " + timeEstimatePed);
             })
         } // end .then doAjaxPed
+
+
+
 
         $("#add-info").on("click", function(event){
             event.preventDefault();
@@ -161,17 +177,15 @@ var alertIt = {
                 endZip: $("#end_zip_input").val().trim()
             }
 
-                console.log(getInput.startAddress);
-                console.log(getInput.endAddress);
-                console.log(getInput.endCity);
-                console.log(getInput.endState);
-                console.log(getInput.endZip);
-                streetStr = getInput.endAddress.replace(/\s/g, "+");
-                destSearchStr = streetStr + "," + getInput.endCity + "," + getInput.endState + getInput.endZip;
-                console.log(destSearchStr);
-                console.log(streetStr);
-                doAjaxRt();
-                doAjaxPed();
+
+
+
+            streetStr = getInput.endAddress.replace(/\s/g, "+");
+            destSearchStr = streetStr + "," + getInput.endCity + "," + getInput.endState + getInput.endZip;
+            console.log("ok: ", streetStr);
+            console.log("ok: ", destSearchStr);
+            doAjaxRt();
+            doAjaxPed();
 
     //*********** check to see that the input form has been completed before allowing start-aler button to be pushed
 
