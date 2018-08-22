@@ -114,5 +114,19 @@ div#footer {
         font-weight: 600;
         color: black;
     }
-
-    
+/*640px is about the width of a phone in landscape */
+@media screen and (max-width:640px){
+    .container{
+      width: 100%;
+      /* background: lightgreen; */
+    }
+    .main-section{
+      width: 100%;
+    }
+    .logo{
+      width: 100%;
+    }
+    nav{
+      width: 100%;
+    }
+  }

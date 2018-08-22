@@ -1,4 +1,14 @@
 # on-time
+The list of technologies
+Voice RSS API 
+MapQuest API 
+HTML5, CSS3
+Bootstrap4 library was used to enable responsive layout for multiple devices, from phone to large screen. 
+JavaScript
+Firebase database
+The JavaScript library of MomentJS was used to calculate the time of arrival.
+Ajax
+JQuery
 
 Here is the pseudo code starter:
 
