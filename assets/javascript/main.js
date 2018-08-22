@@ -175,6 +175,7 @@ var alertIt = {
              var field_alert = "";
              for (let i = 0; i < invalidArray.length; i++) {
                  field_alert += ", " + invalidArray[i];
+                 console.log("invalid fiew: ", field_alert);
 
              }
              alert("these inputs are invalid: " + field_alert);
@@ -188,10 +189,7 @@ var alertIt = {
 //*********** check to see that the input form has been completed before allowing start-aler button to be pushed
 
                 //if (name = "empty")
-                if(checker()) {
-                    setUpComplete = true;
-                    alertIt.startCountDown()
-                } 
+                
 
 
                 console.log(getInput.startAddress);
@@ -212,8 +210,13 @@ var alertIt = {
             //var selValue = $('input[name=rbnNumber]:checked').attr('id');
 
             // reset form fields
+           if(checker()) {
+            setUpComplete = true;
+            //alertIt.startCountDown()
+            return;
+        } else {
             $("form")[0].reset();
-
+        }
 
 
         // start the countdown!

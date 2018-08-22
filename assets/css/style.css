@@ -114,5 +114,44 @@ div#footer {
         font-weight: 600;
         color: black;
     }
-
-    
+    @media screen and (max-width:980px){
+        body{
+          background-color: purple;
+          /* color:white; */
+        }
+        .container{
+          max-width: 620px;
+          background: lightgreen;
+        }
+      }
+      /* 768px is about the width of a table */
+      @media screen and (max-width:768px){
+        body{
+          background-color: lightgreen;
+          /* color:white; */
+        }
+        .container{
+          max-width: 740px;
+          background: lightgreen;
+        }
+      }
+      /*640px is about the width of a phone in landscape */
+      @media screen and (max-width:640px){
+        body{
+          background-color: purple;
+          /* color:white; */
+        }
+        .container{
+          width: 100%;
+          background: lightgreen;
+        }
+    /*640px is about the width of a phone in landscape */
+@media screen and (max-width:640px){
+    body{
+      background-color: purple;
+      /* color:white; */
+    }
+    .container{
+      width: 100%;
+      background: lightgreen;
+    }
