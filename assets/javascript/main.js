@@ -127,7 +127,7 @@ var alertIt = {
 
             if (deviceLatitude && deviceLongitude) {
                 $.ajax({
-                    url: "http://www.mapquestapi.com/geocoding/v1/reverse?key=" + apiKey + "&location=" + deviceLatitude + "," + deviceLongitude + "&includeRoadMetadata=true&includeNearestIntersection=true",
+                    url: "https://www.mapquestapi.com/geocoding/v1/reverse?key=" + apiKey + "&location=" + deviceLatitude + "," + deviceLongitude + "&includeRoadMetadata=true&includeNearestIntersection=true",
                     method: "GET"
                 }).then(function (response) {
                     var shortZip = response.results[0].locations[0].postalCode.split("-");
